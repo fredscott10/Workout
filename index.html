@@ -1,0 +1,1045 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#14161B">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Split">
+<link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAIAAACyr5FlAAADQUlEQVR4nO3cQWrcSBiAUXnIEZJsDGE2OUkgl8hizpZFLhHISWYzBLLKJbIYMGbcX6y21N2qqfd2toUoqE9/NbLx3eu39wuc8setF8BxiYMkDpI4SOIgiYMkDpI4SOIgiYMkDpI4SOIgiYMkDpI4SOIgiYMkDpI4SOIgiYMkDpI4SOIgiYMkDpI4SOIgiYMkDpI4SOIgiYMkDpI4SOIgiYMkDpI4SOIgiYP06tYL2Ornx3dPv/nm6/frr+T+25en3/zx4dP1V7KXu0H/9/nJJp66QiUnm3hqxEqGPFZWlnHWlS+zsoyzrjyOwSbHizd79xHy4s0eaISMNDm2jIF9R8iWMTDQCBkmju27u1cf23d3lD6GiYPrGyOOvR767ffZ66EfYngMEMe+Hxe23G3fHT1+HwPEwa2Ig3T0OC7xFutl97zEKXDwk+XocXBD4iCJgyQOkjhI4iCJgyQOkjhI4iCJgyQOkjhI4iCJgyQOkjhI4iCJgyQOkjhI4iCJgyQOkjhI4iCJgyQOkjhI4iCJgyQOkjhI4iCJgyQOkjhI4iCJgyQOkjhI4iCJgyQOkjhI4iCJgyQOkjhI4iCJgyQOkjhI4iCJgyQOkjhI4iCJgyQOkjhI4iCJgyQOkjhI4iCJgyQOkjhI4iCJg3T0ON58/X6Qe/748Gn3lVzinjs6ehzckDhIA8Sx78my5W77ngIHP1OWIeJY9utj+3322tHjl7GMEgc3MUwc2x/6vcbP9od+iLGxDBTHsm139/3gsmV3RyljWZa712/vb72Gs/38+G79xZd4U/Lg/tuX9RcPlMW/RpocD9bv90XLWM7Z7+HKWAadHI+dnCKXbuKkk1NkxCYeDB8HlzPkscJ1iIMkDtKrWy/gKP75/P7xl3/+9fetVnIcPpD+N4vHJk9k9mPlN2U8+9P/vanjWLP3M/cxbxzrd33aPuaNg2dNGse5w2DO4TFpHKwhDpI4SOIgTRrHua8+53xVOmkcrDFvHOuHwZxjY5k5jmXdrk9bxjJ5HMtzez9zGYtf2T/w9xxPiYM0+7HCb4iDJA6SOEjiIImDJA6SOEjiIImDJA6SOEjiIImDJA6SOEjiIImDJA6SOEjiIP0CbzmK0c+wo3IAAAAASUVORK5CYII=">
+<link rel="manifest" href="data:application/manifest+json;base64,eyJuYW1lIjogIlNwbGl0IFx1MjAxNCBTdHJlbmd0aCBDb25zb2xlIiwgInNob3J0X25hbWUiOiAiU3BsaXQiLCAic3RhcnRfdXJsIjogIi4iLCAiZGlzcGxheSI6ICJzdGFuZGFsb25lIiwgImJhY2tncm91bmRfY29sb3IiOiAiIzE0MTYxQiIsICJ0aGVtZV9jb2xvciI6ICIjMTQxNjFCIiwgImljb25zIjogW3sic3JjIjogImRhdGE6aW1hZ2UvcG5nO2Jhc2U2NCxpVkJPUncwS0dnb0FBQUFOU1VoRVVnQUFBTUFBQUFEQUNBSUFBQURkdnZ0UUFBQURia2xFUVZSNG5PM2RRWW9UUVFCQTBSN3hDT3BtUU54NEVzRkx1UEJzTHJ5RTRFbmNpT0RLUzdnWWlUR0oydVozSjEzeHZkMWtrcUtnUGxVOVJXRHVuank3bitCY2o2NDlBY1ltSUJJQmtRaUlSRUFrQWlJUkVJbUFTQVJFSWlBU0FaRUlpRVJBSkFJaUVSQ0pnRWdFUkNJZ0VnR1JDSWhFUUNRQ0loRVFpWUJJQkVRaUlCSUJrUWlJUkVBa0FpSVJFSW1BU0FSRUlpQVNBWkVJaUVSQUpBSWlFUkNKZ0VnRVJDSWdFZ0dSQ0loRVFDU1ByejJCSlgxNy9mejR4YWNmdmx4K0pqdjNIOThmdi9qMTFadkx6MlFsZHpmdzc1NU9kblBza2lXZDdPYllEWlEwZGtBejA5bTNka1l6MDlrM2RFWURQd09kVWMvWm41cnBqSHJPL3RSR2pCcFE2V0NsaGtvSDR6WTBaRUM5Z01VYjZnVU0ydEI0QVMyMTlnczJ0TlRhajlqUVlBRXR1M01zTXRxeXF6NWNRNE1GeE5hTUZOQWFENzl4ekRVMmpMRTJvWkVDWW9NRVJESk1RT3RkQUo0OThucG56VUNuMkRBQnNVMENJaEVRaVlCSUJFUWlJQklCa1FpSVJFQWtBaUlSRUltQVNBUkVJaUFTQVpFSWlFUkFKQUlpRVJDSmdFZ0VSQ0lnRWdHUkNJaEVRQ1FDSWhFUWlZQklCRVFpSUJJQmtRaUlSRUFrQWlJUkVJbUFTQVJFSWlBU0FaRUlpRVJBSkFJaUVSQ0pnRWdFUkNJZ0VnR1JDSWhFUUNRQ0loRVFpWUJJQkVRaUlCSUJrUWlJUkVBa0FpSVJFSW1BU0FSRUlpQVNBWkVJaUVSQUpBSWlFUkNKZ0VnRVJDSWdFZ0dSQ0loRVFDUUNJaEVReVRBQlBmM3daV3NqZjMzMVp0bVpYR0RreFEwVEVOc2tJSktSQWxyakZJdGpybkhXREhSK1RXTUZ4QVlORnRDeW05QWlveTI3WVl5MS9VekRCVFF0MTlDQ0xTNjE2c1BWTTQwWTBMVEUyaS8rT05YWGZzUjZwa0VEbWxvQksxMHBsUUlHcldjYU42RHAzQTdXdTVDY3p1MWczSHFtYWJwNzh1eisybk9vdnIxK1B1ZHRxNlp6NFA3ait6bHZHenFkQjdjUTBNN0praTdaemJHVEpkMUFOenMzRlJDWE4vQXpFRnNnSUJJQmtRaUk1UEcxSjdCZG45KzkzUC94eGR0UDE1ckpsdmtyN0lTRGRQYko2SUFqN05BZjZ2bnJiLzlEQXZyRm5ENDB0RTlBUDgwdlEwTTdBaUlSMEEvL3VxblloQjRJaUVSQUpBSWlFUkNKZ0g3NDF5dG1WOUlQQkVRaW9KL21ieXEybngwQi9XSk9HZXJaSjZCRGYrNURQUWQ4bmVPM2ZCOW9EZ0dST01KSUJFUWlJQklCa1FpSVJFQWtBaUlSRUltQVNBUkVJaUFTQVpFSWlFUkFKQUlpRVJDSmdFZ0VSQ0lnRWdHUkNJaEVRQ1FDSXZrT2dZQ1c2VVpCdFdBQUFBQUFTVVZPUks1Q1lJST0iLCAic2l6ZXMiOiAiMTkyeDE5MiIsICJ0eXBlIjogImltYWdlL3BuZyJ9XX0=">
+<title>Split — Strength Console</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#14161B;
+    --panel:#1C1F27;
+    --panel-2:#232733;
+    --line:rgba(255,255,255,0.08);
+    --line-2:rgba(255,255,255,0.14);
+    --text:#EDEFF3;
+    --muted:#8B93A1;
+    --faint:#5A6170;
+    --work:#FF5C39;
+    --work-dim:rgba(255,92,57,0.14);
+    --cool:#2FD3C0;
+    --cool-dim:rgba(47,211,192,0.13);
+    --gold:#F4B740;
+    --gold-dim:rgba(244,183,64,0.14);
+    --r:16px;
+    --display:'Saira Condensed', 'Arial Narrow', system-ui, sans-serif;
+    --body:'Inter', system-ui, -apple-system, sans-serif;
+    --mono:'JetBrains Mono', ui-monospace, 'SF Mono', monospace;
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+  html,body{margin:0; padding:0;}
+  body{
+    background:var(--ink); color:var(--text); font-family:var(--body);
+    font-size:16px; line-height:1.45; -webkit-font-smoothing:antialiased;
+    padding-bottom:120px; min-height:100vh;
+  }
+  .wrap{max-width:560px; margin:0 auto; padding:0 16px;}
+
+  header.top{position:sticky; top:0; z-index:30; background:linear-gradient(180deg, var(--ink) 70%, rgba(20,22,27,0)); padding:14px 0 8px;}
+  .brand{display:flex; align-items:baseline; gap:10px;}
+  .brand .logo{font-family:var(--display); font-weight:700; font-size:26px; letter-spacing:0.04em; text-transform:uppercase; line-height:1;}
+  .brand .logo .dot{color:var(--work);}
+  .brand .tag{font-size:11px; letter-spacing:0.18em; text-transform:uppercase; color:var(--muted); font-weight:600;}
+  .brand .date{margin-left:auto; font-family:var(--mono); font-size:12px; color:var(--muted);}
+
+  .tabs{display:flex; gap:4px; margin-top:12px; background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:4px;}
+  .tab{flex:1; text-align:center; padding:9px 6px; border-radius:9px; cursor:pointer; font-weight:600; font-size:13px; letter-spacing:0.05em; text-transform:uppercase; color:var(--muted); background:transparent; border:none; font-family:var(--body); transition:background .15s, color .15s;}
+  .tab[aria-selected="true"]{background:var(--panel-2); color:var(--text);}
+  .tab:focus-visible{outline:2px solid var(--cool); outline-offset:2px;}
+
+  .picker{margin-top:14px;}
+  .seg{display:flex; gap:6px;}
+  .seg button{flex:1; padding:12px 4px 10px; border-radius:13px; cursor:pointer; background:var(--panel); border:1px solid var(--line); color:var(--muted); font-family:var(--body); text-align:center; transition:border-color .15s, background .15s, color .15s;}
+  .seg button .code{font-family:var(--display); font-weight:700; font-size:20px; letter-spacing:0.03em; display:block; line-height:1;}
+  .seg button .lab{font-size:10px; letter-spacing:0.09em; text-transform:uppercase; margin-top:5px; display:block; font-weight:600;}
+  .seg button[aria-pressed="true"]{border-color:var(--work); background:var(--work-dim); color:var(--text);}
+  .seg button:focus-visible{outline:2px solid var(--cool); outline-offset:2px;}
+
+  .varrow{display:flex; align-items:center; gap:8px; margin-top:10px;}
+  .varrow .lbl{font-size:11px; letter-spacing:0.14em; text-transform:uppercase; color:var(--faint); font-weight:600;}
+  .varpills{display:flex; gap:6px; margin-left:auto;}
+  .varpill{padding:6px 14px; border-radius:999px; cursor:pointer; font-size:13px; font-weight:600; background:var(--panel); border:1px solid var(--line); color:var(--muted); font-family:var(--mono); transition:all .15s;}
+  .varpill[aria-pressed="true"]{border-color:var(--cool); background:var(--cool-dim); color:var(--text);}
+  .varpill:focus-visible{outline:2px solid var(--cool); outline-offset:2px;}
+
+  .session-head{margin-top:16px; padding:16px; border-radius:var(--r); background:linear-gradient(135deg, var(--panel-2), var(--panel)); border:1px solid var(--line);}
+  .session-head .bib{font-family:var(--mono); font-size:11px; letter-spacing:0.16em; color:var(--work); text-transform:uppercase; font-weight:700;}
+  .session-head h1{font-family:var(--display); font-weight:700; font-size:30px; line-height:1; margin:6px 0 0; letter-spacing:0.01em; text-transform:uppercase;}
+  .session-head .meta{display:flex; gap:16px; margin-top:12px; flex-wrap:wrap;}
+  .session-head .meta span{font-size:12px; color:var(--muted); display:flex; align-items:center; gap:6px;}
+  .session-head .meta b{color:var(--text); font-family:var(--mono); font-weight:500;}
+  .legend{display:flex; gap:14px; margin-top:12px; font-size:11px; color:var(--muted); flex-wrap:wrap;}
+  .legend i{display:inline-block; width:9px; height:9px; border-radius:3px; margin-right:5px; vertical-align:middle;}
+  .legend .w{background:var(--work);} .legend .c{background:var(--cool);} .legend .g{background:var(--gold);}
+
+  .sync{margin-top:12px; font-size:11.5px; font-weight:600; padding:9px 12px; border-radius:10px; line-height:1.45;}
+  .sync.ok{color:var(--cool); background:var(--cool-dim); border:1px solid rgba(47,211,192,0.25);}
+  .sync.warn{color:var(--gold); background:var(--gold-dim); border:1px solid rgba(244,183,64,0.32);}
+
+  .block{margin-top:14px;}
+  .block-label{display:flex; align-items:center; gap:8px; margin:0 2px 8px; font-size:11px; letter-spacing:0.16em; text-transform:uppercase; color:var(--muted); font-weight:700;}
+  .block-label.pwr{color:var(--work);}
+  .block-label .rest{margin-left:auto; font-family:var(--mono); color:var(--faint); letter-spacing:0.04em;}
+
+  .card{background:var(--panel); border:1px solid var(--line); border-radius:var(--r); padding:14px; position:relative; overflow:hidden;}
+  .card + .card{margin-top:10px;}
+  .card.work{border-left:3px solid var(--work);}
+  .card.cool{border-left:3px solid var(--cool);}
+
+  .group{position:relative; padding-left:14px;}
+  .group::before{content:""; position:absolute; left:0; top:14px; bottom:14px; width:3px; border-radius:3px; background:linear-gradient(180deg, var(--work), var(--cool));}
+  .group .card{border-left:none;}
+  .group .card + .card{margin-top:8px;}
+
+  .ex-top{display:flex; align-items:flex-start; gap:10px;}
+  .ex-name{font-family:var(--display); font-weight:600; font-size:21px; line-height:1.05; letter-spacing:0.01em; text-transform:uppercase; flex:1;}
+  .ex-scheme{font-family:var(--mono); font-size:14px; font-weight:700; white-space:nowrap; padding-top:2px;}
+  .card.work .ex-scheme{color:var(--work);}
+  .card.cool .ex-scheme{color:var(--cool);}
+
+  .ex-load{display:inline-flex; align-items:center; gap:8px; margin-top:10px; padding:6px 11px; border-radius:9px; background:var(--gold-dim); border:1px solid rgba(244,183,64,0.28); font-size:12px; color:var(--text); font-family:var(--mono); font-weight:500; line-height:1.3;}
+  .sugg{display:flex; align-items:center; gap:10px; width:100%; text-align:left; margin-top:12px; padding:10px 12px; border-radius:10px; cursor:pointer; font-family:var(--body); border:1px solid; transition:filter .15s;}
+  .sugg:active{transform:scale(.99);}
+  .sugg .sg-dir{font-family:var(--display); font-weight:700; font-size:12px; letter-spacing:0.05em; text-transform:uppercase; flex:none;}
+  .sugg .sg-w{font-family:var(--mono); font-weight:700; font-size:16px; flex:none;}
+  .sugg .sg-why{font-size:11px; color:var(--muted); margin-left:auto; text-align:right; line-height:1.25;}
+  .sugg.up{background:var(--cool-dim); border-color:rgba(47,211,192,0.4);}
+  .sugg.up .sg-dir, .sugg.up .sg-w{color:var(--cool);}
+  .sugg.hold{background:rgba(255,255,255,0.035); border-color:var(--line-2);}
+  .sugg.hold .sg-dir, .sugg.hold .sg-w{color:var(--text);}
+  .sugg:focus-visible{outline:2px solid var(--cool); outline-offset:2px;}
+  .ex-load b{color:var(--gold); font-family:var(--body); font-weight:700; font-size:9.5px; letter-spacing:0.12em; text-transform:uppercase; flex:none;}
+
+  .ex-cue{font-size:13px; color:var(--muted); margin-top:8px; line-height:1.4;}
+  .ex-sub{font-size:12px; color:var(--faint); margin-top:5px;}
+  .ex-sub b{color:var(--muted); font-weight:600;}
+
+  .sets{display:flex; gap:7px; margin-top:12px; flex-wrap:wrap;}
+  .dot{width:34px; height:34px; border-radius:9px; border:1.5px solid var(--line-2); background:transparent; cursor:pointer; display:flex; align-items:center; justify-content:center; font-family:var(--mono); font-size:12px; color:var(--faint); font-weight:700; transition:all .12s;}
+  .dot[data-on="1"]{background:var(--work-dim); border-color:var(--work); color:var(--work);}
+  .cool .dot[data-on="1"]{background:var(--cool-dim); border-color:var(--cool); color:var(--cool);}
+  .dot:focus-visible{outline:2px solid var(--cool); outline-offset:2px;}
+
+  .log{display:flex; align-items:flex-end; gap:10px; margin-top:12px;}
+  .field{flex:1;}
+  .field label{display:block; font-size:10px; letter-spacing:0.12em; text-transform:uppercase; color:var(--faint); margin-bottom:4px; font-weight:600;}
+  .field input{width:100%; background:var(--ink); border:1px solid var(--line-2); border-radius:10px; color:var(--text); font-family:var(--mono); font-size:18px; font-weight:700; padding:10px 11px; text-align:center;}
+  .field input:focus{outline:none; border-color:var(--cool);}
+  .field .unit{font-size:11px; color:var(--faint); font-family:var(--body); font-weight:400; text-transform:none; letter-spacing:0;}
+  .last{font-family:var(--mono); font-size:11px; color:var(--faint); margin-top:8px;}
+  .last b{color:var(--muted); font-weight:500;}
+
+  .filler{margin-top:12px; padding:10px 12px; border-radius:11px; background:var(--cool-dim); border:1px dashed rgba(47,211,192,0.4); display:flex; align-items:center; gap:10px;}
+  .filler .t{flex:1; font-size:12.5px; color:var(--text);}
+  .filler .t b{color:var(--cool); font-family:var(--display); font-weight:600; font-size:13px; letter-spacing:0.1em; text-transform:uppercase; display:block; margin-bottom:1px;}
+
+  .checklist .row{display:flex; align-items:center; gap:12px; padding:11px 0; border-top:1px solid var(--line);}
+  .checklist .row:first-child{border-top:none;}
+  .checklist .row .nm{flex:1;}
+  .checklist .row .nm b{font-weight:600; font-size:15px;}
+  .checklist .row .nm small{display:block; color:var(--muted); font-size:12px; margin-top:1px;}
+  .check{width:26px; height:26px; border-radius:8px; border:1.5px solid var(--line-2); background:transparent; cursor:pointer; flex:none; display:flex; align-items:center; justify-content:center; transition:all .12s;}
+  .check svg{width:15px; height:15px; opacity:0; transform:scale(.6); transition:all .12s;}
+  .check[data-on="1"]{background:var(--cool); border-color:var(--cool);}
+  .check[data-on="1"] svg{opacity:1; transform:scale(1);}
+  .check:focus-visible{outline:2px solid var(--cool); outline-offset:2px;}
+
+  details.fold{background:var(--panel); border:1px solid var(--line); border-radius:var(--r); overflow:hidden;}
+  details.fold > summary{list-style:none; cursor:pointer; padding:14px; display:flex; align-items:center; gap:10px; font-family:var(--display); font-weight:600; font-size:17px; letter-spacing:0.04em; text-transform:uppercase;}
+  details.fold > summary::-webkit-details-marker{display:none;}
+  details.fold > summary .ico{color:var(--cool); font-size:13px;}
+  details.fold > summary .chev{margin-left:auto; color:var(--muted); transition:transform .2s;}
+  details.fold[open] > summary .chev{transform:rotate(180deg);}
+  details.fold > summary .mini{font-family:var(--mono); font-size:11px; color:var(--faint); letter-spacing:0; text-transform:none; font-weight:500; margin-left:8px;}
+  details.fold .body{padding:0 14px 8px;}
+
+  .finishbar{position:fixed; left:0; right:0; bottom:0; z-index:40; background:linear-gradient(0deg, var(--ink) 78%, rgba(20,22,27,0)); padding:12px 16px calc(14px + env(safe-area-inset-bottom));}
+  .finishbar .inner{max-width:560px; margin:0 auto; display:flex; gap:10px; align-items:center;}
+  .progresswrap{flex:1;}
+  .progresswrap .pl{display:flex; justify-content:space-between; font-size:11px; color:var(--muted); margin-bottom:5px; font-family:var(--mono);}
+  .bar{height:7px; border-radius:4px; background:var(--panel-2); overflow:hidden;}
+  .bar i{display:block; height:100%; width:0%; background:linear-gradient(90deg, var(--work), var(--gold)); border-radius:4px; transition:width .3s;}
+  .btn{border:none; border-radius:13px; padding:13px 18px; font-weight:700; font-size:14px; cursor:pointer; font-family:var(--body); letter-spacing:0.03em; transition:transform .1s, filter .15s;}
+  .btn:active{transform:scale(.97);}
+  .btn-primary{background:var(--work); color:#1a0d08;}
+  .btn-primary:disabled{background:var(--panel-2); color:var(--faint); cursor:default;}
+
+  .timer-fab{position:fixed; right:16px; bottom:84px; z-index:45; width:58px; height:58px; border-radius:50%; cursor:pointer; background:var(--panel-2); color:var(--cool); box-shadow:0 8px 24px rgba(0,0,0,0.45); display:flex; align-items:center; justify-content:center; flex-direction:column; gap:1px; border:1.5px solid var(--cool);}
+  .timer-fab .lab{font-size:8px; letter-spacing:0.1em; text-transform:uppercase; color:var(--cool); font-weight:700;}
+  .timer-fab.running{background:var(--cool); color:var(--ink);}
+  .timer-fab.running .lab, .timer-fab.running .tnum{color:var(--ink);}
+  .timer-fab .tnum{font-family:var(--mono); font-weight:700; font-size:15px; line-height:1;}
+
+  .sheet-backdrop{position:fixed; inset:0; background:rgba(8,9,12,0.7); z-index:50; opacity:0; pointer-events:none; transition:opacity .2s;}
+  .sheet-backdrop.show{opacity:1; pointer-events:auto;}
+  .sheet{position:fixed; left:0; right:0; bottom:0; z-index:51; transform:translateY(100%); transition:transform .25s cubic-bezier(.2,.8,.2,1); background:var(--panel); border-top-left-radius:24px; border-top-right-radius:24px; padding:18px 18px calc(24px + env(safe-area-inset-bottom)); border-top:1px solid var(--line-2);}
+  .sheet.show{transform:translateY(0);}
+  .sheet .grab{width:38px; height:4px; border-radius:3px; background:var(--line-2); margin:0 auto 16px;}
+  .sheet .inner{max-width:560px; margin:0 auto;}
+  .timer-title{text-align:center; font-family:var(--display); font-weight:600; letter-spacing:0.14em; text-transform:uppercase; color:var(--muted); font-size:13px;}
+  .clock{position:relative; width:200px; height:200px; margin:14px auto;}
+  .clock svg{transform:rotate(-90deg);}
+  .clock .digits{position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center;}
+  .clock .digits .big{font-family:var(--mono); font-weight:700; font-size:46px; letter-spacing:0.02em; line-height:1;}
+  .clock .digits .sub{font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:var(--muted); margin-top:4px; font-weight:600;}
+  .presets{display:flex; gap:8px; justify-content:center; margin-top:6px;}
+  .preset{flex:1; padding:11px 4px; border-radius:11px; background:var(--panel-2); border:1px solid var(--line); color:var(--text); font-family:var(--mono); font-weight:700; font-size:15px; cursor:pointer; transition:all .12s;}
+  .preset[aria-pressed="true"]{border-color:var(--cool); background:var(--cool-dim); color:var(--cool);}
+  .preset:focus-visible{outline:2px solid var(--cool); outline-offset:2px;}
+  .tctrl{display:flex; gap:8px; margin-top:12px;}
+  .tctrl button{flex:1; padding:13px; border-radius:12px; font-weight:700; font-size:14px; cursor:pointer; border:none; font-family:var(--body);}
+  .t-start{background:var(--cool); color:var(--ink);}
+  .t-adj{background:var(--panel-2); color:var(--text); border:1px solid var(--line-2); flex:0 0 auto; width:58px; font-family:var(--mono);}
+
+  .stats{display:flex; gap:10px; margin-top:14px;}
+  .stat{flex:1; background:var(--panel); border:1px solid var(--line); border-radius:var(--r); padding:14px;}
+  .stat .n{font-family:var(--mono); font-weight:700; font-size:28px; line-height:1;}
+  .stat .l{font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted); margin-top:6px; font-weight:600;}
+  .stat.s1 .n{color:var(--work);} .stat.s2 .n{color:var(--cool);} .stat.s3 .n{color:var(--gold);}
+
+  .panel{background:var(--panel); border:1px solid var(--line); border-radius:var(--r); padding:16px; margin-top:14px;}
+  .panel h3{font-family:var(--display); font-weight:600; letter-spacing:0.06em; text-transform:uppercase; font-size:16px; margin:0 0 12px;}
+  select.exsel{width:100%; background:var(--ink); border:1px solid var(--line-2); border-radius:11px; color:var(--text); font-family:var(--body); font-size:15px; padding:11px; -webkit-appearance:none; appearance:none; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238B93A1' stroke-width='1.6' fill='none'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 14px center;}
+  select.exsel:focus{outline:none; border-color:var(--cool);}
+  .spark{margin-top:14px;}
+  .hist{margin-top:12px;}
+  .hist .h{display:flex; align-items:center; gap:12px; padding:10px 0; border-top:1px solid var(--line); font-size:14px;}
+  .hist .h:first-child{border-top:none;}
+  .hist .h .d{font-family:var(--mono); font-size:12px; color:var(--muted); width:64px; flex:none;}
+  .hist .h .v{font-family:var(--mono); font-weight:700;}
+  .hist .h .v small{color:var(--muted); font-weight:500;}
+  .hist .h .badge{margin-left:auto; font-size:10px; color:var(--gold); background:var(--gold-dim); border:1px solid rgba(244,183,64,0.3); padding:2px 7px; border-radius:999px; letter-spacing:0.08em; font-weight:700;}
+  .empty{color:var(--faint); font-size:14px; text-align:center; padding:24px 0;}
+
+  .sesslog .sl{padding:12px 0; border-top:1px solid var(--line);}
+  .sesslog .sl:first-child{border-top:none;}
+  .sesslog .sl .top{display:flex; align-items:baseline; gap:10px;}
+  .sesslog .sl .top .ttl{font-family:var(--display); font-weight:600; letter-spacing:0.03em; text-transform:uppercase;}
+  .sesslog .sl .top .dt{margin-left:auto; font-family:var(--mono); font-size:12px; color:var(--muted);}
+  .sesslog .sl .ex{font-size:12.5px; color:var(--muted); margin-top:4px; line-height:1.5;}
+
+  .toast{position:fixed; left:50%; bottom:96px; transform:translateX(-50%) translateY(20px); z-index:60; background:var(--cool); color:var(--ink); font-weight:700; font-size:14px; padding:12px 20px; border-radius:12px; opacity:0; pointer-events:none; transition:all .25s; box-shadow:0 8px 24px rgba(0,0,0,0.4);}
+  .toast.show{opacity:1; transform:translateX(-50%) translateY(0);}
+  .toast.err{background:var(--work); color:#1a0d08;}
+
+  .danger-link{background:none; border:none; color:var(--faint); font-size:12px; text-decoration:underline; cursor:pointer; font-family:var(--body); padding:8px;}
+
+  .bk-note{font-size:13px; color:var(--muted); margin:0 0 4px; line-height:1.5;}
+  .bk-area{width:100%; min-height:80px; background:var(--ink); border:1px solid var(--line-2); border-radius:11px; color:var(--text); font-family:var(--mono); font-size:11px; padding:11px; resize:vertical; margin-top:10px; line-height:1.4;}
+  .bk-area:focus{outline:none; border-color:var(--cool);}
+  .bk-btn{width:100%; border:none; border-radius:12px; padding:12px; font-weight:700; font-size:14px; cursor:pointer; font-family:var(--body); background:var(--cool); color:var(--ink); margin-top:10px;}
+  .bk-btn.ghost{background:var(--panel-2); color:var(--text); border:1px solid var(--line-2);}
+  .bk-sep{font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:var(--faint); font-weight:600; margin-top:18px; padding-top:14px; border-top:1px solid var(--line);}
+
+  @media (prefers-reduced-motion: reduce){ *{transition:none !important; animation:none !important;} }
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <div class="brand">
+      <span class="logo">SPLIT<span class="dot">.</span></span>
+      <span class="tag">Athletic Performance</span>
+      <span class="date" id="todayDate"></span>
+    </div>
+    <div class="tabs" role="tablist">
+      <button class="tab" role="tab" id="tab-workout" aria-selected="true" data-view="workout">Workout</button>
+      <button class="tab" role="tab" id="tab-progress" aria-selected="false" data-view="progress">Progress</button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap" id="main"></main>
+
+<div class="finishbar" id="finishbar">
+  <div class="inner">
+    <div class="progresswrap">
+      <div class="pl"><span id="pcount">0 / 0 sets</span><span id="pelapsed"></span></div>
+      <div class="bar"><i id="pbar"></i></div>
+    </div>
+    <button class="btn btn-primary" id="finishBtn" disabled>Finish</button>
+  </div>
+</div>
+
+<button class="timer-fab" id="timerFab" aria-label="Rest timer">
+  <span class="lab" id="fabLab">Rest</span>
+  <span class="tnum" id="fabNum" style="display:none;">1:30</span>
+</button>
+
+<div class="sheet-backdrop" id="backdrop"></div>
+<div class="sheet" id="timerSheet" role="dialog" aria-label="Rest timer">
+  <div class="grab"></div>
+  <div class="inner">
+    <div class="timer-title">Rest Timer</div>
+    <div class="clock">
+      <svg width="200" height="200" viewBox="0 0 200 200">
+        <circle cx="100" cy="100" r="90" fill="none" stroke="#232733" stroke-width="10"/>
+        <circle id="ring" cx="100" cy="100" r="90" fill="none" stroke="#2FD3C0" stroke-width="10" stroke-linecap="round" stroke-dasharray="565.48" stroke-dashoffset="0"/>
+      </svg>
+      <div class="digits">
+        <div class="big" id="clockBig">1:30</div>
+        <div class="sub" id="clockSub">Tap start</div>
+      </div>
+    </div>
+    <div class="presets" id="presets">
+      <button class="preset" data-sec="90">1:30</button>
+      <button class="preset" data-sec="120" aria-pressed="true">2:00</button>
+      <button class="preset" data-sec="180">3:00</button>
+      <button class="preset" data-sec="240">4:00</button>
+    </div>
+    <div class="tctrl">
+      <button class="t-adj" id="tMinus">−15</button>
+      <button class="t-start" id="tStart">Start</button>
+      <button class="t-adj" id="tPlus">+15</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============================================================
+   PROGRAM — Athletic / high-performance
+   role: work = power & strength (warm) · cool = recovery / core
+   load = intensity guidance (%1RM, RPE, or proximity to failure)
+   ============================================================ */
+const CHECK_SVG = '<svg viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L19 7" stroke="#14161B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+function ex(id,name,scheme,sets,role,load,cue,opts={}){
+  return {id,name,scheme,sets,role,load,cue,log:opts.log!==false,sub:opts.sub||null,unit:opts.unit||'lb'};
+}
+
+const DAYS = {
+  A:{
+    code:'A', title:'Lower Power + Push', emphasis:'Explosive lower body · horizontal push', time:'~45 min',
+    warmup:[
+      {n:'Bike or row', d:'2–3 min, raise core temp'},
+      {n:'Leg swings', d:'10 each — front/back + lateral'},
+      {n:"World's greatest stretch", d:'4 each side'},
+      {n:'Banded glute bridge', d:'15 reps'},
+      {n:'Pogo hops', d:'20, light + springy'},
+      {n:'Bodyweight jump squats', d:'5, prime the CNS'}
+    ],
+    cooldown:[
+      {n:'Hip flexor stretch', d:'40s each side'},
+      {n:'Standing quad stretch', d:'30s each'},
+      {n:'Figure-4 glute', d:'40s each'},
+      {n:'Hamstring stretch', d:'40s each'},
+      {n:'Calf stretch', d:'30s each'},
+      {n:"Child's pose + side reach", d:'60s'}
+    ],
+    variations:{
+      1:{ label:'V1', blocks:[
+        {kind:'power', label:'Power · explosive first', rest:'full (60–90s)', items:[
+          ex('A_boxjump','Box Jump','5 × 3',5,'work','Max height · land soft · full reset','Explode up, step down to reset. Never to failure — quality height only.',{log:false})
+        ]},
+        {kind:'strength', label:'Strength', rest:'2:30',
+          ex:ex('A_backsquat','Back Squat','4 × 4',4,'work','~82% 1RM · RPE 8 (2 reps in reserve)','Brace hard, sit between hips, drive the floor away.',{sub:'Goblet / safety-bar squat'}),
+          filler:{name:'90/90 hip rotations',detail:'6 each side while you rest'}},
+        {kind:'superset', label:'Superset 1', rest:'90s', items:[
+          ex('A_dbbench','DB Bench Press','3 × 6',3,'work','RPE 8 · 1 rep in reserve','Blades down + back, control the lower, drive up fast.'),
+          ex('A_wpullup','Weighted Pull-up','3 × 8',3,'cool','RPE 8 · stop 1 shy of failure','Full hang to chin over bar. Add load on a belt/DB.',{sub:'Band-assisted / lat pulldown'})
+        ]},
+        {kind:'superset', label:'Superset 2', rest:'75s', items:[
+          ex('A_bulgarian','Bulgarian Split Squat','3 × 8 ea',3,'work','RPE 8 · last 2 reps hard but clean','Front foot flat, drop straight down, tall torso.'),
+          ex('A_pallof','Pallof Press','3 × 10 ea',3,'cool','Slow · zero rotation','Press out, resist the pull, no twist at the trunk.',{log:false})
+        ]},
+        {kind:'finisher', label:'Finisher', rest:'60s', items:[
+          ex('A_sled','Push Sled','5 × 20 yd',5,'work','Heavy · max drive','Low body angle, powerful turnover, full effort each trip.',{log:false})
+        ]}
+      ]},
+      2:{ label:'V2', blocks:[
+        {kind:'power', label:'Power · explosive first', rest:'full (60–90s)', items:[
+          ex('A_tbjump','Trap-Bar Jump','5 × 3',5,'work','Light (~25% BW) · max speed','Jump off the ground with the bar. Speed, not grind. Not to failure.',{log:false,sub:'DB squat jump'})
+        ]},
+        {kind:'strength', label:'Strength', rest:'2:30',
+          ex:ex('A_frontsquat','Front Squat','4 × 5',4,'work','~78% 1RM · RPE 8','Elbows high, tall chest, knees track over toes.',{sub:'Goblet squat'}),
+          filler:{name:'Deep squat hold',detail:'3 × 20s, pry the knees open'}},
+        {kind:'superset', label:'Superset 1', rest:'90s', items:[
+          ex('A_landmine','Landmine Press','3 × 8 ea',3,'work','RPE 8 · 1 rep in reserve','Stagger stance, press up and slightly across, brace.'),
+          ex('A_csrow','Chest-Supported Row','3 × 10',3,'cool','RPE 8 · squeeze + control','Chest on the pad, drive elbows back, no momentum.')
+        ]},
+        {kind:'superset', label:'Superset 2', rest:'75s', items:[
+          ex('A_revlunge','DB Reverse Lunge','3 × 8 ea',3,'work','RPE 8 · controlled descent','Step back, knee kisses floor, drive through front heel.'),
+          ex('A_legraise','Hanging Leg Raise','3 × 10',3,'cool','Slow · no swing · full control','Curl the pelvis up, lower under control.',{log:false})
+        ]},
+        {kind:'finisher', label:'Finisher', rest:'60s', items:[
+          ex('A_mbslam','Med Ball Slam','4 × 8',4,'work','Max intent · quality over fatigue','Full extension overhead, slam down with everything.',{log:false})
+        ]}
+      ]}
+    }
+  },
+
+  B:{
+    code:'B', title:'Upper Strength + Pull', emphasis:'Pressing power · vertical pull · trunk', time:'~45 min',
+    warmup:[
+      {n:'Row or ski-erg', d:'2–3 min'},
+      {n:'Arm circles + shoulder rolls', d:'10 each direction'},
+      {n:'Band pull-aparts', d:'15 reps'},
+      {n:'Scapular push-ups', d:'10 reps'},
+      {n:'Cat–cow', d:'8 slow reps'},
+      {n:'Light med ball chest pass', d:'8, prime the press'}
+    ],
+    cooldown:[
+      {n:'Doorway chest stretch', d:'40s each side'},
+      {n:'Cross-body shoulder', d:'30s each'},
+      {n:'Overhead triceps stretch', d:'30s each'},
+      {n:'Lat stretch (hang or wall)', d:'40s each'},
+      {n:'Thoracic extension over roller', d:'60s'},
+      {n:'Neck side stretch', d:'20s each'}
+    ],
+    variations:{
+      1:{ label:'V1', blocks:[
+        {kind:'power', label:'Power · explosive first', rest:'full (60s)', items:[
+          ex('B_mbpass','Explosive Med Ball Chest Pass','5 × 4',5,'work','Max velocity · full reset','Drive the ball into the wall as hard as possible. Catch, reset, repeat.',{log:false})
+        ]},
+        {kind:'strength', label:'Strength', rest:'2:30',
+          ex:ex('B_bench','Bench Press','5 × 3',5,'work','~85% 1RM · RPE 8','Blades pinned, controlled eccentric, explode off the chest.',{sub:'DB bench'}),
+          filler:{name:'Band pull-aparts',detail:'15 reps while you rest'}},
+        {kind:'superset', label:'Superset 1', rest:'90s', items:[
+          ex('B_wpullup','Weighted Pull-up','4 × 5',4,'work','RPE 8 · add load','Full range, lead with the chest, control the lower.',{sub:'Lat pulldown'}),
+          ex('B_dbohp','Standing DB Overhead Press','3 × 8',3,'cool','RPE 8 · 1 rep in reserve','Ribs down, glutes tight, press to a full lockout.')
+        ]},
+        {kind:'superset', label:'Superset 2', rest:'75s', items:[
+          ex('B_dbrow','Single-arm DB Row','3 × 8 ea',3,'work','RPE 8 · drive the elbow','Flat back, pull past the ribs, no twist.'),
+          ex('B_facepull','Cable Face Pull','3 × 15',3,'cool','RPE 7 · pause + squeeze','Pull to the forehead, externally rotate, hold a beat.')
+        ]},
+        {kind:'circuit', label:'Core finish', rest:'45s', rounds:3, items:[
+          ex('B_chop','Cable Chop','10 ea',1,'cool','Controlled · drive from the core','Rotate through the trunk, arms stay long.',{log:false}),
+          ex('B_hollow','Hollow Hold','30s',1,'cool','Hold until form slips, not beyond','Low back glued down, ribs in, legs long.',{log:false})
+        ]}
+      ]},
+      2:{ label:'V2', blocks:[
+        {kind:'power', label:'Power · explosive first', rest:'full (60s)', items:[
+          ex('B_plyopush','Plyo Push-up','5 × 3',5,'work','Explosive · full recovery · not to failure','Push hard enough to leave the floor. Reset fully between reps.',{log:false,sub:'On a box if needed'})
+        ]},
+        {kind:'strength', label:'Strength', rest:'2:30',
+          ex:ex('B_ohp','Standing Overhead Press','5 × 3',5,'work','~85% 1RM · RPE 8','Ribs down, squeeze glutes, press the bar to overhead lockout.',{sub:'Seated DB press'}),
+          filler:{name:'TRX face pull',detail:'12 reps while you rest'}},
+        {kind:'superset', label:'Superset 1', rest:'90s', items:[
+          ex('B_chinup','Weighted Chin-up','4 × 6',4,'work','RPE 8 · add load','Underhand grip, lead with the chest, control down.',{sub:'Lat pulldown'}),
+          ex('B_incline','Incline DB Press','3 × 8',3,'cool','RPE 8 · 1 rep in reserve','45° bench, press up and slightly in, full stretch.')
+        ]},
+        {kind:'superset', label:'Superset 2', rest:'75s', items:[
+          ex('B_csrow2','Chest-Supported DB Row','3 × 10',3,'work','RPE 8 · squeeze the mid-back','Chest on the pad, drive elbows back, pause at the top.'),
+          ex('B_lateral','Lateral Raise','3 × 12',3,'cool','RPE 9 · burn out the last set clean','Lead with the elbows, no swing, control the lower.')
+        ]},
+        {kind:'circuit', label:'Core finish', rest:'45s', rounds:3, items:[
+          ex('B_abwheel','Ab Wheel Rollout','8 reps',1,'cool','Controlled · stop before the low back sags','Ribs down, brace, roll out only as far as you can own.',{log:false,sub:'TRX fallout'}),
+          ex('B_sideplank','Side Plank + reach','20s ea',1,'cool','Hold strong, stop at form break','Stack the hips, thread the arm under, hold tall.',{log:false})
+        ]}
+      ]}
+    }
+  },
+
+  C:{
+    code:'C', title:'Posterior Power + Athletic', emphasis:'Hinge strength · sled, throws, jumps, carries', time:'~45 min',
+    warmup:[
+      {n:'Bike', d:'2–3 min'},
+      {n:'Banded hip hinge / good-morning', d:'10 reps'},
+      {n:'Glute bridge', d:'15 reps'},
+      {n:'Pogo hops', d:'20, springy'},
+      {n:'Submax broad jumps', d:'3, build intent'},
+      {n:'Inchworm', d:'5 reps'}
+    ],
+    cooldown:[
+      {n:'Hamstring stretch', d:'40s each'},
+      {n:'Hip flexor stretch', d:'40s each'},
+      {n:'Figure-4 glute', d:'40s each'},
+      {n:'Knees-to-chest / lower back', d:'60s'},
+      {n:'Thoracic rotation (open book)', d:'8 each'},
+      {n:'Calf stretch', d:'30s each'}
+    ],
+    variations:{
+      1:{ label:'V1', blocks:[
+        {kind:'power', label:'Power · explosive first', rest:'full (60–90s)', items:[
+          ex('C_broad','Broad Jump','5 × 3',5,'work','Max distance · stick the landing · full recovery','Explode out and forward, land soft and balanced, reset.',{log:false})
+        ]},
+        {kind:'strength', label:'Strength', rest:'2:45',
+          ex:ex('C_tbdl','Trap-Bar Deadlift','5 × 3',5,'work','~85% 1RM · RPE 8','Wedge in, lats tight, push the floor away, lock the hips.',{sub:'Conventional deadlift'}),
+          filler:{name:'Hip flexor mobilization',detail:'30s each side while you rest'}},
+        {kind:'circuit', label:'Power pair', rest:'75–90s', rounds:4, items:[
+          ex('C_sled','Sled Push','20 yd',1,'work','Heavy · max drive','Low angle, aggressive steps, full send each trip.',{log:false}),
+          ex('C_mbrot','Med Ball Rotational Throw','5 ea',1,'work','Explosive · full intent · full reset','Load the back hip, fire through the rotation into the wall.',{log:false})
+        ]},
+        {kind:'superset', label:'Superset', rest:'75s', items:[
+          ex('C_slrdl','Single-leg RDL','3 × 8 ea',3,'work','RPE 8 · slow eccentric, hips square','Hinge over one leg, reach long, feel the hamstring.'),
+          ex('C_farmer','Farmer Carry','3 × 40 yd',3,'cool','Heavy · grip challenge','Tall and braced, shoulders packed, even steps.')
+        ]},
+        {kind:'finisher', label:'Core finish', rest:'45s', items:[
+          ex('C_pallofhold','Pallof Hold','3 × 20s ea',3,'cool','Brace hard · resist all rotation','Press out, lock the ribs, hold dead still.',{log:false})
+        ]}
+      ]},
+      2:{ label:'V2', blocks:[
+        {kind:'power', label:'Power · explosive first', rest:'full (60–90s)', items:[
+          ex('C_bound','Lateral Bound','5 × 4 ea',5,'work','Max distance · stick + hold each landing','Push off one leg, cover ground sideways, stick and pause.',{log:false})
+        ]},
+        {kind:'strength', label:'Strength', rest:'2:30',
+          ex:ex('C_rdl','Romanian Deadlift','4 × 5',4,'work','~75% 1RM · RPE 8','Soft knees, hips back, feel the hamstrings, neutral spine.'),
+          filler:{name:'Glute bridge hold',detail:'3 × 20s while you rest'}},
+        {kind:'circuit', label:'Power pair', rest:'75–90s', rounds:4, items:[
+          ex('C_swing','KB / DB Swing','8 reps',1,'work','Explosive hip snap · speed over load','Hike, snap the hips, float the bell, breathe out hard.'),
+          ex('C_slam2','Med Ball Slam','8 reps',1,'work','Max intent · drive it down','Full reach overhead, slam with the whole body.',{log:false})
+        ]},
+        {kind:'superset', label:'Superset', rest:'75s', items:[
+          ex('C_hipthrust','Hip Thrust','4 × 8',4,'work','RPE 8 · pause + squeeze at the top','Chin tucked, ribs down, full glute lockout each rep.'),
+          ex('C_suitcase','Suitcase Carry','3 × 40 yd ea',3,'cool','Heavy · stay perfectly vertical','One weight, resist the lean, walk tall and controlled.')
+        ]},
+        {kind:'finisher', label:'Core finish', rest:'45s', items:[
+          ex('C_bosudb','Bosu Dead Bug','3 × 8 ea',3,'cool','Slow · low back pinned','Opposite arm/leg, control the reach, no arching.',{log:false})
+        ]}
+      ]}
+    }
+  }
+};
+
+const DAY_ORDER = ['A','B','C'];
+
+/* ============================================================ STORAGE
+   Layered so the app saves wherever it actually can:
+     1. localStorage  — used when opened in a real browser (reliable, offline)
+     2. window.storage — Claude's in-app store, used as a fallback
+     3. memory only    — last resort; app still runs, backup code recommended
+   A startup probe picks the first backend that truly works, and the UI
+   shows which one is active so saving is never a silent guess.
+   ============================================================ */
+const K = { sessions:'split_sessions_v2', last:'split_lastvals_v2', rotation:'split_rotation_v2', inprog:'split_inprogress_v2' };
+let BACKEND='memory';
+const _mem={};
+
+function _lsOK(){
+  try{ const k='__split_probe__'; localStorage.setItem(k,'1'); const ok=localStorage.getItem(k)==='1'; localStorage.removeItem(k); return ok; }
+  catch(e){ return false; }
+}
+let _chain=Promise.resolve();
+function _enqueue(task){ const run=_chain.then(task,task); _chain=run.then(()=>{},()=>{}); return run; }
+function _cSet(k,v){ return _enqueue(async()=>{ try{ await window.storage.set(k,v,false); return true; }catch(e){ return false; } }); }
+function _cGet(k){ return _enqueue(async()=>{ try{ const r=await window.storage.get(k,false); return r?r.value:null; }catch(e){ return null; } }); }
+function _cDel(k){ return _enqueue(async()=>{ try{ await window.storage.delete(k,false); return true; }catch(e){ return false; } }); }
+
+async function detectBackend(){
+  if(_lsOK()) return 'local';
+  try{ if(window.storage && window.storage.set){ const ok=await _cSet('__split_probe__','1'); if(ok){ await _cDel('__split_probe__'); return 'claude'; } } }catch(e){}
+  return 'memory';
+}
+
+async function sget(key,def){
+  try{
+    let raw=null;
+    if(BACKEND==='local') raw=localStorage.getItem(key);
+    else if(BACKEND==='claude') raw=await _cGet(key);
+    else raw=(key in _mem)?_mem[key]:null;
+    return (raw==null)?def:JSON.parse(raw);
+  }catch(e){ return def; }
+}
+async function sset(key,val){
+  const payload=JSON.stringify(val);
+  try{
+    if(BACKEND==='local'){ localStorage.setItem(key,payload); return true; }
+    if(BACKEND==='claude'){ return await _cSet(key,payload); }
+    _mem[key]=payload; return false;   // memory = not durable
+  }catch(e){ return false; }
+}
+async function sdel(key){
+  try{
+    if(BACKEND==='local'){ localStorage.removeItem(key); return true; }
+    if(BACKEND==='claude'){ return await _cDel(key); }
+    delete _mem[key]; return true;
+  }catch(e){ return false; }
+}
+function syncStatusHTML(){
+  if(BACKEND==='local')  return '<div class="sync ok">✓ Saving to this device</div>';
+  if(BACKEND==='claude') return '<div class="sync ok">✓ Saving in Claude</div>';
+  return '<div class="sync warn">Progress won\'t save inside this preview. Download the file and open it in your phone\'s browser to save automatically — or keep a backup code from the Progress tab.</div>';
+}
+
+/* ============================================================ STATE ============================================================ */
+const STATE = { view:'workout', dayId:'A', varIndex:1, sessions:[], last:{}, rotation:{A:1,B:1,C:1}, log:{}, startedAt:null, progressEx:null };
+function currentVariation(){ return DAYS[STATE.dayId].variations[STATE.varIndex]; }
+function blockItems(b){ return b.kind==='strength' ? [b.ex] : (b.items||[]); }
+
+/* ---- auto-progression: nudge the weight up once target reps are hit ----
+   Double-progression style. Big bilateral barbell lifts jump 10 lb, everything
+   else 5 lb. Rep ranges (e.g. 6–8) progress off the top of the range. */
+const BIG10 = new Set(['Back Squat','Front Squat','Bench Press','Standing Overhead Press','Trap-Bar Deadlift','Romanian Deadlift','Hip Thrust']);
+function incFor(e){ return BIG10.has(e.name) ? 10 : 5; }
+function targetReps(scheme){
+  const parts=String(scheme).split('×'); if(parts.length<2) return null;
+  const nums=(parts[1].match(/\d+/g)||[]).map(Number);
+  return nums.length ? Math.max(...nums) : null;   // top of a range
+}
+function suggestion(e){
+  if(!e.log) return null;
+  const last=STATE.last[e.id];
+  if(!last || last.w==='' || last.w==null) return null;   // need a prior weight
+  const lw=parseFloat(last.w); if(isNaN(lw)) return null;
+  const tr=targetReps(e.scheme), lr=parseInt(last.r);
+  if(tr && !isNaN(lr) && lr>=tr){
+    const inc=incFor(e);
+    return {dir:'up', weight:lw+inc, why:`hit target · +${inc} lb`};
+  }
+  if(isNaN(lr)) return {dir:'hold', weight:lw, why:'log reps to progress'};
+  return {dir:'hold', weight:lw, why:`aim for ${tr} reps`};
+}
+
+function allLoggableExercises(){
+  const out=[];
+  for(const d of DAY_ORDER) for(const vi of [1,2]) for(const b of DAYS[d].variations[vi].blocks)
+    for(const e of blockItems(b)) if(!out.find(x=>x.id===e.id)) out.push(e);
+  return out;
+}
+
+/* ============================================================ INIT ============================================================ */
+async function init(){
+  document.getElementById('todayDate').textContent =
+    new Date().toLocaleDateString(undefined,{weekday:'short',month:'short',day:'numeric'}).toUpperCase();
+
+  BACKEND = await detectBackend();
+
+  STATE.sessions = await sget(K.sessions, []);
+  STATE.last     = await sget(K.last, {});
+  STATE.rotation = await sget(K.rotation, {A:1,B:1,C:1});
+
+  if(STATE.sessions.length){
+    const lastDay = STATE.sessions[STATE.sessions.length-1].dayId;
+    STATE.dayId = DAY_ORDER[(DAY_ORDER.indexOf(lastDay)+1)%3];
+  }
+  STATE.varIndex = STATE.rotation[STATE.dayId] || 1;
+
+  const ip = await sget(K.inprog, null);
+  if(ip && ip.dayId===STATE.dayId && ip.varIndex===STATE.varIndex){
+    STATE.log = ip.log || {}; STATE.startedAt = ip.startedAt || Date.now();
+  }
+
+  bindChrome();
+  render();
+  setInterval(updateElapsed, 1000);
+  window.addEventListener('visibilitychange', ()=>{ if(document.visibilityState==='hidden') flushInProgress(); });
+  window.addEventListener('pagehide', flushInProgress);
+}
+
+/* ============================================================ RENDER ============================================================ */
+function render(){
+  document.querySelectorAll('.tab').forEach(t=> t.setAttribute('aria-selected', t.dataset.view===STATE.view?'true':'false'));
+  const main=document.getElementById('main'), fb=document.getElementById('finishbar'), fab=document.getElementById('timerFab');
+  if(STATE.view==='workout'){
+    fb.style.display=''; fab.style.display='';
+    main.innerHTML = renderWorkout(); bindWorkout(); updateProgressBar(); updateElapsed();
+  }else{
+    fb.style.display='none'; fab.style.display='none';
+    if(window._closeTimerSheet) window._closeTimerSheet();
+    main.innerHTML = renderProgress(); bindProgress();
+  }
+}
+function logFor(id){ return STATE.log[id] || (STATE.log[id]={w:'',r:'',sets:0,done:false}); }
+
+function renderWorkout(){
+  const day=DAYS[STATE.dayId], v=currentVariation();
+  let h='<div class="picker"><div class="seg">';
+  for(const d of DAY_ORDER) h+=`<button data-day="${d}" aria-pressed="${d===STATE.dayId}"><span class="code">${d}</span><span class="lab">${DAYS[d].title}</span></button>`;
+  h+='</div>';
+  h+=`<div class="varrow"><span class="lbl">Variation</span><div class="varpills">
+        <button class="varpill" data-var="1" aria-pressed="${STATE.varIndex===1}">V1</button>
+        <button class="varpill" data-var="2" aria-pressed="${STATE.varIndex===2}">V2</button>
+      </div></div></div>`;
+
+  h+=`<div class="session-head">
+        <div class="bib">Day ${day.code} · Variation ${STATE.varIndex}</div>
+        <h1>${day.title}</h1>
+        <div class="meta"><span>◈ <b>${day.emphasis}</b></span></div>
+        <div class="meta"><span>⏱ <b>${day.time}</b></span><span>🏋 <b>3× / week</b></span></div>
+        <div class="legend">
+          <span><i class="w"></i>Power / strength</span>
+          <span><i class="c"></i>Recovery / core</span>
+          <span><i class="g"></i>Load guidance</span>
+        </div>
+        ${syncStatusHTML()}
+      </div>`;
+
+  h+=renderChecklistFold('warmup','Warm-up + prime', day.warmup, '~7 min');
+
+  for(const b of v.blocks){
+    h+='<div class="block">';
+    const pwr = b.kind==='power' ? ' pwr':'';
+    h+=`<div class="block-label${pwr}">${b.label}${b.rounds?` · ${b.rounds} rounds`:''}<span class="rest">rest ${b.rest}</span></div>`;
+    if(b.kind==='strength'){
+      h+=renderExCard(b.ex);
+      h+=`<div class="filler"><div class="t"><b>During your rest</b>${b.filler.name} — ${b.filler.detail}</div></div>`;
+    }else if(b.kind==='superset'){
+      h+='<div class="group">'; for(const e of b.items) h+=renderExCard(e); h+='</div>';
+    }else if(b.kind==='circuit'){
+      h+=renderCircuit(b);
+    }else{ // power, finisher
+      for(const e of b.items) h+=renderExCard(e);
+    }
+    h+='</div>';
+  }
+
+  h+=renderChecklistFold('cooldown','Cool-down + stretch', day.cooldown, '~7 min');
+  h+='<div style="height:8px"></div>';
+  return h;
+}
+
+function renderExCard(e){
+  const lg=logFor(e.id), last=STATE.last[e.id], cls=e.role==='work'?'work':'cool';
+  const sets=parseInt(e.sets)||1;
+  let dots='';
+  for(let i=1;i<=sets;i++) dots+=`<button class="dot" data-ex="${e.id}" data-set="${i}" data-on="${lg.sets>=i?1:0}" aria-label="Set ${i}">${i}</button>`;
+  let logHtml='';
+  if(e.log){
+    const sug=suggestion(e);
+    const suggHtml = sug ? `<button class="sugg ${sug.dir}" data-sugg="${e.id}" data-w="${sug.weight}" aria-label="Use suggested weight ${sug.weight} pounds">
+        <span class="sg-dir">${sug.dir==='up'?'▲ Next':'→ Hold'}</span>
+        <span class="sg-w">${sug.weight} ${e.unit}</span>
+        <span class="sg-why">${sug.why}</span>
+      </button>` : '';
+    const wph = sug ? sug.weight : (last?last.w:'–');
+    logHtml=`${suggHtml}<div class="log">
+      <div class="field"><label>Weight <span class="unit">${e.unit}</span></label>
+        <input type="number" inputmode="decimal" data-ex="${e.id}" data-f="w" value="${lg.w}" placeholder="${wph}"></div>
+      <div class="field"><label>Reps</label>
+        <input type="number" inputmode="numeric" data-ex="${e.id}" data-f="r" value="${lg.r}" placeholder="${last?last.r:'–'}"></div>
+    </div>`;
+    if(last) logHtml+=`<div class="last">Last: <b>${last.w} ${e.unit} × ${last.r}</b></div>`;
+  }
+  return `<div class="card ${cls}">
+    <div class="ex-top"><div class="ex-name">${e.name}</div><div class="ex-scheme">${e.scheme}</div></div>
+    <div class="ex-load"><b>Load</b> ${e.load}</div>
+    <div class="ex-cue">${e.cue}</div>
+    ${e.sub?`<div class="ex-sub"><b>Sub:</b> ${e.sub}</div>`:''}
+    <div class="sets">${dots}</div>
+    ${logHtml}
+  </div>`;
+}
+
+function renderCircuit(b){
+  const cid='circ_'+b.label.replace(/[^A-Za-z0-9]/g,''), lg=logFor(cid), rounds=b.rounds||1;
+  let dots='';
+  for(let i=1;i<=rounds;i++) dots+=`<button class="dot" data-ex="${cid}" data-set="${i}" data-on="${lg.sets>=i?1:0}" aria-label="Round ${i}">${i}</button>`;
+  let items='';
+  for(const e of b.items) items+=`<div class="row"><div class="nm"><b>${e.name}</b><small>${e.scheme} · ${e.load} · ${e.cue}</small></div></div>`;
+  return `<div class="card cool">
+    <div class="checklist">${items}</div>
+    <div style="font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--faint);font-weight:600;margin-top:12px;">Rounds complete</div>
+    <div class="sets">${dots}</div>
+  </div>`;
+}
+
+function renderChecklistFold(kind,title,items,mini){
+  const ico = kind==='warmup'?'△':'▽';
+  let rows='';
+  items.forEach((it,i)=>{
+    const id=`${kind}_${i}`, lg=STATE.log[id];
+    rows+=`<div class="row"><button class="check" data-check="${id}" data-on="${lg&&lg.done?1:0}" aria-label="Done">${CHECK_SVG}</button>
+      <div class="nm"><b>${it.n}</b><small>${it.d}</small></div></div>`;
+  });
+  return `<div class="block"><details class="fold" ${kind==='warmup'?'open':''}>
+    <summary><span class="ico">${ico}</span>${title}<span class="mini">${mini}</span><span class="chev">▾</span></summary>
+    <div class="body"><div class="checklist">${rows}</div></div>
+  </details></div>`;
+}
+
+/* ============================================================ WORKOUT INTERACTIONS ============================================================ */
+function bindWorkout(){
+  const main=document.getElementById('main');
+  main.querySelectorAll('[data-day]').forEach(b=>b.onclick=()=>{ flushInProgress(); STATE.dayId=b.dataset.day; STATE.varIndex=STATE.rotation[STATE.dayId]||1; STATE.log={}; STATE.startedAt=null; render(); });
+  main.querySelectorAll('[data-var]').forEach(b=>b.onclick=()=>{ flushInProgress(); STATE.varIndex=parseInt(b.dataset.var); STATE.log={}; STATE.startedAt=null; render(); });
+
+  main.querySelectorAll('.dot').forEach(d=>d.onclick=()=>{
+    const id=d.dataset.ex, s=parseInt(d.dataset.set), lg=logFor(id);
+    lg.sets = (lg.sets===s)? s-1 : s;
+    ensureStart(); persistInProgress();
+    main.querySelectorAll(`.dot[data-ex="${CSS.escape(id)}"]`).forEach(o=>{ o.dataset.on=(parseInt(o.dataset.set)<=lg.sets)?1:0; });
+    updateProgressBar();
+  });
+
+  main.querySelectorAll('.check').forEach(c=>c.onclick=()=>{
+    const id=c.dataset.check, lg=STATE.log[id]||(STATE.log[id]={done:false});
+    lg.done=!lg.done; c.dataset.on=lg.done?1:0; ensureStart(); persistInProgress(); updateProgressBar();
+  });
+
+  main.querySelectorAll('input[data-ex]').forEach(inp=>{
+    inp.oninput=()=>{ const lg=logFor(inp.dataset.ex); lg[inp.dataset.f]=inp.value; ensureStart(); persistInProgress(); };
+  });
+
+  main.querySelectorAll('.sugg').forEach(b=>b.onclick=()=>{
+    const id=b.dataset.sugg, w=b.dataset.w, lg=logFor(id);
+    lg.w=w; ensureStart(); persistInProgress();
+    const inp=main.querySelector(`input[data-ex="${CSS.escape(id)}"][data-f="w"]`);
+    if(inp) inp.value=w;
+  });
+}
+function ensureStart(){ if(!STATE.startedAt) STATE.startedAt=Date.now(); }
+
+/* debounced + de-duplicated autosave — only writes when state actually
+   changed, and only the resume snapshot (the durable save is Finish) */
+let ipTimer=null, _lastIp=null;
+function persistInProgress(){ clearTimeout(ipTimer); ipTimer=setTimeout(flushInProgress, 1500); }
+function flushInProgress(){
+  clearTimeout(ipTimer); ipTimer=null;
+  if(!STATE.startedAt) return;
+  const snap={dayId:STATE.dayId, varIndex:STATE.varIndex, log:STATE.log, startedAt:STATE.startedAt};
+  const payload=JSON.stringify(snap);
+  if(payload===_lastIp) return;            // nothing changed since last write
+  _lastIp=payload;
+  sset(K.inprog, snap);        // best-effort resume snapshot; never surfaces an error
+}
+
+function workSetTotals(){
+  const v=currentVariation(); let total=0, done=0;
+  for(const b of v.blocks){
+    if(b.kind==='circuit'){
+      const id='circ_'+b.label.replace(/[^A-Za-z0-9]/g,''), r=b.rounds||1;
+      total+=r; done+=Math.min((STATE.log[id]?.sets||0),r);
+    }else{
+      for(const e of blockItems(b)){ const s=parseInt(e.sets)||1; total+=s; done+=Math.min((STATE.log[e.id]?.sets||0),s); }
+    }
+  }
+  return {total,done};
+}
+function updateProgressBar(){
+  const {total,done}=workSetTotals();
+  document.getElementById('pcount').textContent=`${done} / ${total} sets`;
+  document.getElementById('pbar').style.width = total?(done/total*100)+'%':'0%';
+  document.getElementById('finishBtn').disabled = done===0;
+}
+function updateElapsed(){
+  const el=document.getElementById('pelapsed'); if(!el) return;
+  if(STATE.view!=='workout' || !STATE.startedAt){ el.textContent=''; return; }
+  const s=Math.floor((Date.now()-STATE.startedAt)/1000);
+  el.textContent=`${Math.floor(s/60)}:${String(s%60).padStart(2,'0')} elapsed`;
+}
+
+/* ============================================================ FINISH ============================================================ */
+async function finishSession(){
+  clearTimeout(ipTimer); ipTimer=null;
+  const v=currentVariation(), entries=[];
+  for(const b of v.blocks) for(const e of blockItems(b)){
+    const lg=STATE.log[e.id];
+    if(lg && (lg.sets>0 || lg.w || lg.r)){
+      entries.push({exId:e.id, name:e.name, w:lg.w||'', r:lg.r||'', sets:lg.sets||0, unit:e.unit, log:e.log});
+      if(e.log && lg.w) STATE.last[e.id]={w:lg.w, r:lg.r||''};
+    }
+  }
+  if(!entries.length){ toast('Log at least one set first'); return; }
+
+  const session={ id:Date.now(), date:new Date().toISOString(), dayId:STATE.dayId, varIndex:STATE.varIndex, dayTitle:DAYS[STATE.dayId].title, entries };
+  STATE.sessions.push(session);
+  STATE.rotation[STATE.dayId] = STATE.varIndex===1?2:1;
+
+  const ok1=await sset(K.sessions, STATE.sessions);
+  const ok2=await sset(K.last, STATE.last);
+  await sset(K.rotation, STATE.rotation);
+  await sdel(K.inprog);
+
+  if(!ok1||!ok2){ toast("Couldn't save here — grab a backup code from the Progress tab", true); return; }
+
+  _lastIp=null;
+  STATE.log={}; STATE.startedAt=null;
+  STATE.dayId=DAY_ORDER[(DAY_ORDER.indexOf(STATE.dayId)+1)%3];
+  STATE.varIndex=STATE.rotation[STATE.dayId]||1;
+  toast('Session saved 💪');
+  render();
+}
+
+/* ============================================================ PROGRESS ============================================================ */
+function isoWeek(d){ const dt=new Date(d); const o=new Date(Date.UTC(dt.getFullYear(),dt.getMonth(),dt.getDate())); const day=o.getUTCDay()||7; o.setUTCDate(o.getUTCDate()+4-day); const ys=new Date(Date.UTC(o.getUTCFullYear(),0,1)); return o.getUTCFullYear()+'-'+Math.ceil((((o-ys)/86400000)+1)/7); }
+function computeStreakAndWeek(){
+  const s=STATE.sessions, total=s.length;
+  const thisWeek=s.filter(x=>isoWeek(x.date)===isoWeek(new Date())).length;
+  const weeks=new Set(s.map(x=>isoWeek(x.date)));
+  let streak=0, cur=new Date();
+  while(weeks.has(isoWeek(cur))){ streak++; cur.setDate(cur.getDate()-7); }
+  return {total,thisWeek,streak};
+}
+function renderProgress(){
+  const {total,thisWeek,streak}=computeStreakAndWeek();
+  let h=syncStatusHTML();
+  h+=`<div class="stats">
+      <div class="stat s1"><div class="n">${total}</div><div class="l">Sessions logged</div></div>
+      <div class="stat s2"><div class="n">${thisWeek}</div><div class="l">This week</div></div>
+      <div class="stat s3"><div class="n">${streak}</div><div class="l">Week streak</div></div>
+    </div>`;
+  const logged = allLoggableExercises().filter(e=>STATE.sessions.some(s=>s.entries.some(en=>en.exId===e.id && en.w)));
+  h+='<div class="panel"><h3>Lift progress</h3>';
+  if(!logged.length){ h+='<div class="empty">No weights logged yet. Finish a session and your numbers show up here.</div>'; }
+  else{
+    if(!STATE.progressEx || !logged.find(e=>e.id===STATE.progressEx)) STATE.progressEx=logged[0].id;
+    h+='<select class="exsel" id="exsel">';
+    for(const e of logged) h+=`<option value="${e.id}" ${e.id===STATE.progressEx?'selected':''}>${e.name}</option>`;
+    h+='</select>';
+    h+=`<div class="spark" id="sparkwrap">${sparklineFor(STATE.progressEx)}</div>`;
+    h+=`<div class="hist" id="histwrap">${historyFor(STATE.progressEx)}</div>`;
+  }
+  h+='</div>';
+  h+='<div class="panel"><h3>Recent sessions</h3>';
+  if(!STATE.sessions.length){ h+='<div class="empty">Your completed workouts will appear here.</div>'; }
+  else{
+    h+='<div class="sesslog">';
+    [...STATE.sessions].reverse().slice(0,12).forEach(s=>{
+      const dt=new Date(s.date).toLocaleDateString(undefined,{month:'short',day:'numeric'});
+      const exs=s.entries.filter(e=>e.w).map(e=>`${e.name} ${e.w}${e.unit||''}×${e.r}`).join(' · ') || s.entries.map(e=>e.name).slice(0,4).join(' · ');
+      h+=`<div class="sl"><div class="top"><span class="ttl">Day ${s.dayId} · ${s.dayTitle}</span><span class="dt">${dt}</span></div><div class="ex">${exs}</div></div>`;
+    });
+    h+='</div>';
+  }
+  h+='</div>';
+  h+=`<div class="panel"><h3>Backup &amp; restore</h3>
+    <p class="bk-note">Your sets, weights and history save automatically inside Claude and stay put when this app gets updated. A backup code is your safety net — keep a copy, or use it to move progress into a fresh version.</p>
+    <button class="bk-btn" id="bkExport">Create backup code</button>
+    <textarea class="bk-area" id="bkArea" readonly style="display:none" aria-label="Backup code"></textarea>
+    <button class="bk-btn ghost" id="bkCopy" style="display:none">Copy code</button>
+    <div class="bk-sep">Restore from a code</div>
+    <textarea class="bk-area" id="bkIn" placeholder="Paste a backup code here, then tap Restore"></textarea>
+    <button class="bk-btn ghost" id="bkImport">Restore progress</button>
+  </div>`;
+  h+='<div style="text-align:center;margin-top:8px;"><button class="danger-link" id="resetBtn">Reset all data</button></div><div style="height:8px"></div>';
+  return h;
+}
+function seriesFor(id){
+  const pts=[];
+  for(const s of STATE.sessions){ const en=s.entries.find(e=>e.exId===id && e.w); if(en) pts.push({date:s.date, w:parseFloat(en.w), r:en.r, unit:en.unit||'lb'}); }
+  return pts;
+}
+function sparklineFor(id){
+  const pts=seriesFor(id);
+  if(pts.length<2) return `<div class="empty" style="padding:14px 0">Log this lift again to see your trend line.</div>`;
+  const ws=pts.map(p=>p.w), min=Math.min(...ws), max=Math.max(...ws), range=(max-min)||1;
+  const W=480,H=90,pad=8, step=(W-pad*2)/(pts.length-1);
+  let d='', dots='';
+  pts.forEach((p,i)=>{
+    const x=pad+i*step, y=H-pad-((p.w-min)/range)*(H-pad*2);
+    d+=(i?'L':'M')+x.toFixed(1)+' '+y.toFixed(1)+' ';
+    const isMax=p.w===max;
+    dots+=`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${isMax?4:3}" fill="${isMax?'#F4B740':'#2FD3C0'}"/>`;
+  });
+  return `<svg viewBox="0 0 ${W} ${H}" width="100%" height="90" preserveAspectRatio="none" style="overflow:visible">
+    <path d="${d}" fill="none" stroke="#2FD3C0" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>${dots}</svg>
+  <div style="display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;color:var(--faint);margin-top:6px;">
+    <span>${min} ${pts[0].unit}</span><span style="color:var(--gold)">PR ${max} ${pts[0].unit}</span></div>`;
+}
+function historyFor(id){
+  const pts=seriesFor(id); if(!pts.length) return '';
+  const max=Math.max(...pts.map(p=>p.w)); let h='';
+  [...pts].reverse().slice(0,10).forEach(p=>{
+    const dt=new Date(p.date).toLocaleDateString(undefined,{month:'short',day:'numeric'});
+    h+=`<div class="h"><span class="d">${dt}</span><span class="v">${p.w}<small> ${p.unit} × ${p.r||'–'}</small></span>${p.w===max?'<span class="badge">PR</span>':''}</div>`;
+  });
+  return h;
+}
+function bindProgress(){
+  const sel=document.getElementById('exsel');
+  if(sel) sel.onchange=()=>{ STATE.progressEx=sel.value; document.getElementById('sparkwrap').innerHTML=sparklineFor(STATE.progressEx); document.getElementById('histwrap').innerHTML=historyFor(STATE.progressEx); };
+
+  const exp=document.getElementById('bkExport');
+  if(exp) exp.onclick=()=>{
+    const code=JSON.stringify({v:2, exported:new Date().toISOString(), sessions:STATE.sessions, last:STATE.last, rotation:STATE.rotation});
+    const a=document.getElementById('bkArea'); a.value=code; a.style.display='block';
+    document.getElementById('bkCopy').style.display='block';
+    a.focus(); a.select();
+  };
+  const cp=document.getElementById('bkCopy');
+  if(cp) cp.onclick=async()=>{
+    const a=document.getElementById('bkArea');
+    try{ await navigator.clipboard.writeText(a.value); toast('Backup code copied'); }
+    catch(e){ a.focus(); a.select(); toast('Selected — long-press to copy'); }
+  };
+  const im=document.getElementById('bkImport');
+  if(im) im.onclick=async()=>{
+    const raw=(document.getElementById('bkIn').value||'').trim();
+    if(!raw){ toast('Paste a backup code first'); return; }
+    let data; try{ data=JSON.parse(raw); }catch(e){ toast("That code isn't valid", true); return; }
+    if(!data || !Array.isArray(data.sessions)){ toast("That code isn't valid", true); return; }
+    if(!confirm('Restore this backup? It replaces the progress currently in the app.')) return;
+    STATE.sessions=data.sessions; STATE.last=data.last||{}; STATE.rotation=data.rotation||{A:1,B:1,C:1};
+    const a=await sset(K.sessions,STATE.sessions), b=await sset(K.last,STATE.last); await sset(K.rotation,STATE.rotation);
+    toast(a&&b ? 'Progress restored' : 'Restored here — sync will catch up', !(a&&b));
+    render();
+  };
+
+  const rb=document.getElementById('resetBtn');
+  if(rb) rb.onclick=async()=>{
+    if(!confirm('Delete all logged sessions, weights, and history? This cannot be undone.')) return;
+    await sdel(K.sessions); await sdel(K.last); await sdel(K.rotation); await sdel(K.inprog);
+    STATE.sessions=[]; STATE.last={}; STATE.rotation={A:1,B:1,C:1}; STATE.log={}; STATE.startedAt=null; STATE.progressEx=null;
+    toast('Data cleared'); render();
+  };
+}
+
+/* ============================================================ CHROME / TIMER / TOAST ============================================================ */
+function bindChrome(){
+  document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{ STATE.view=t.dataset.view; render(); });
+  document.getElementById('finishBtn').onclick=finishSession;
+  bindTimer();
+}
+let toastTimer;
+function toast(msg, isErr){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.toggle('err', !!isErr); t.classList.add('show');
+  clearTimeout(toastTimer); toastTimer=setTimeout(()=>t.classList.remove('show'), isErr?3200:2200);
+}
+
+const TIMER={dur:120, left:120, running:false, raf:null, end:0};
+const RING_LEN=565.48;
+function bindTimer(){
+  const fab=document.getElementById('timerFab'), sheet=document.getElementById('timerSheet'), backdrop=document.getElementById('backdrop');
+  fab.onclick=()=>{ sheet.classList.add('show'); backdrop.classList.add('show'); };
+  backdrop.onclick=()=>closeSheet();
+  document.querySelectorAll('.preset').forEach(p=>p.onclick=()=>{
+    document.querySelectorAll('.preset').forEach(x=>x.setAttribute('aria-pressed','false'));
+    p.setAttribute('aria-pressed','true'); setDuration(parseInt(p.dataset.sec));
+  });
+  document.getElementById('tMinus').onclick=()=>setDuration(Math.max(15,TIMER.dur-15));
+  document.getElementById('tPlus').onclick=()=>setDuration(TIMER.dur+15);
+  document.getElementById('tStart').onclick=()=>TIMER.running?stopTimer():startTimer();
+  setDuration(120);
+  function closeSheet(){ sheet.classList.remove('show'); backdrop.classList.remove('show'); }
+  window._closeTimerSheet=closeSheet;
+}
+function fmt(s){ s=Math.max(0,Math.ceil(s)); return Math.floor(s/60)+':'+String(s%60).padStart(2,'0'); }
+function setDuration(sec){ TIMER.dur=sec; if(!TIMER.running){ TIMER.left=sec; paintTimer(); } }
+function paintTimer(){
+  document.getElementById('clockBig').textContent=fmt(TIMER.left);
+  const frac=TIMER.dur?TIMER.left/TIMER.dur:0;
+  document.getElementById('ring').style.strokeDashoffset=(RING_LEN*(1-frac)).toFixed(1);
+  const fabNum=document.getElementById('fabNum'), fabLab=document.getElementById('fabLab'), fab=document.getElementById('timerFab');
+  if(TIMER.running){ fabNum.style.display=''; fabLab.style.display='none'; fabNum.textContent=fmt(TIMER.left); fab.classList.add('running'); }
+  else{ fabNum.style.display='none'; fabLab.style.display=''; fab.classList.remove('running'); }
+}
+function startTimer(){ TIMER.running=true; TIMER.end=Date.now()+TIMER.left*1000; document.getElementById('tStart').textContent='Stop'; document.getElementById('clockSub').textContent='Resting'; tick(); }
+function tick(){ TIMER.left=(TIMER.end-Date.now())/1000; if(TIMER.left<=0){ TIMER.left=0; paintTimer(); finishTimer(); return; } paintTimer(); TIMER.raf=requestAnimationFrame(tick); }
+function stopTimer(){ TIMER.running=false; cancelAnimationFrame(TIMER.raf); TIMER.left=TIMER.dur; document.getElementById('tStart').textContent='Start'; document.getElementById('clockSub').textContent='Tap start'; paintTimer(); }
+function finishTimer(){
+  TIMER.running=false; cancelAnimationFrame(TIMER.raf);
+  document.getElementById('tStart').textContent='Start'; document.getElementById('clockSub').textContent='Go!';
+  paintTimer(); beep(); if(navigator.vibrate) navigator.vibrate([120,60,120]);
+  setTimeout(()=>{ if(!TIMER.running){ TIMER.left=TIMER.dur; document.getElementById('clockSub').textContent='Tap start'; paintTimer(); } },1500);
+}
+let actx;
+function beep(){
+  try{
+    actx=actx||new (window.AudioContext||window.webkitAudioContext)();
+    [0,0.18,0.36].forEach(t=>{
+      const o=actx.createOscillator(), g=actx.createGain();
+      o.frequency.value=880; o.type='sine'; o.connect(g); g.connect(actx.destination);
+      g.gain.setValueAtTime(0.0001,actx.currentTime+t);
+      g.gain.exponentialRampToValueAtTime(0.3,actx.currentTime+t+0.01);
+      g.gain.exponentialRampToValueAtTime(0.0001,actx.currentTime+t+0.14);
+      o.start(actx.currentTime+t); o.stop(actx.currentTime+t+0.15);
+    });
+  }catch(e){}
+}
+
+init();
+</script>
+</body>
+</html>
