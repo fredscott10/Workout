@@ -47,7 +47,7 @@
   header.top{position:sticky; top:0; z-index:30; background:linear-gradient(180deg, var(--ink) 70%, rgba(20,22,27,0)); padding:14px 0 8px;}
   .brand{display:flex; align-items:baseline; gap:10px;}
   .brand .logo{font-family:var(--display); font-weight:700; font-size:26px; letter-spacing:0.04em; text-transform:uppercase; line-height:1;}
-  .brand .logo .dot{color:var(--work);}
+  .brand .logo .logo-dot{color:var(--work);}
   .brand .tag{font-size:11px; letter-spacing:0.18em; text-transform:uppercase; color:var(--muted); font-weight:600;}
   .brand .date{margin-left:auto; font-family:var(--mono); font-size:12px; color:var(--muted);}
 
@@ -81,6 +81,21 @@
   .legend i{display:inline-block; width:9px; height:9px; border-radius:3px; margin-right:5px; vertical-align:middle;}
   .legend .w{background:var(--work);} .legend .c{background:var(--cool);} .legend .g{background:var(--gold);}
 
+  .blockseg{display:flex; gap:6px; margin-bottom:10px;}
+  .blockseg button{flex:1; padding:9px 6px; border-radius:11px; cursor:pointer; background:var(--panel); border:1px solid var(--line); color:var(--muted); font-family:var(--display); font-weight:700; font-size:15px; letter-spacing:0.06em; text-transform:uppercase; transition:all .15s;}
+  .blockseg button small{display:block; font-family:var(--body); font-size:10px; font-weight:600; letter-spacing:0.1em; margin-top:2px;}
+  .blockseg button[aria-pressed="true"]{border-color:var(--gold); background:var(--gold-dim); color:var(--text);}
+  .blockseg button[aria-pressed="true"] small{color:var(--gold);}
+  .blockseg button:focus-visible{outline:2px solid var(--cool); outline-offset:2px;}
+  .weekbar{margin-top:12px; padding:10px 12px; border-radius:10px; font-size:12.5px; line-height:1.45; color:var(--text); background:var(--work-dim); border:1px solid rgba(255,92,57,0.3);}
+  .weekbar b{display:block; font-family:var(--display); font-weight:700; font-size:13px; letter-spacing:0.08em; text-transform:uppercase; color:var(--work); margin-bottom:2px;}
+  .weekbar.cool{background:var(--cool-dim); border-color:rgba(47,211,192,0.3);}
+  .weekbar.cool b{color:var(--cool);}
+  .weekbar.muted{background:rgba(255,255,255,0.035); border-color:var(--line-2);}
+  .weekbar.muted b{color:var(--muted);}
+  .sugg.start{background:var(--gold-dim); border-color:rgba(244,183,64,0.4);}
+  .sugg.start .sg-dir, .sugg.start .sg-w{color:var(--gold);}
+  .hist .h .btag{font-family:var(--mono); font-size:10px; color:var(--muted); border:1px solid var(--line-2); border-radius:6px; padding:1px 5px; margin-left:6px;}
   .sync{margin-top:12px; font-size:11.5px; font-weight:600; padding:9px 12px; border-radius:10px; line-height:1.45;}
   .sync.ok{color:var(--cool); background:var(--cool-dim); border:1px solid rgba(47,211,192,0.25);}
   .sync.warn{color:var(--gold); background:var(--gold-dim); border:1px solid rgba(244,183,64,0.32);}
@@ -247,8 +262,8 @@
 <header class="top">
   <div class="wrap">
     <div class="brand">
-      <span class="logo">SPLIT<span class="dot">.</span></span>
-      <span class="tag">Athletic Performance</span>
+      <span class="logo">SPLIT<span class="logo-dot">.</span></span>
+      <span class="tag" id="brandTag">Build · Hypertrophy</span>
       <span class="date" id="todayDate"></span>
     </div>
     <div class="tabs" role="tablist">
@@ -291,10 +306,10 @@
       </div>
     </div>
     <div class="presets" id="presets">
-      <button class="preset" data-sec="90">1:30</button>
-      <button class="preset" data-sec="120" aria-pressed="true">2:00</button>
+      <button class="preset" data-sec="60">1:00</button>
+      <button class="preset" data-sec="90" aria-pressed="true">1:30</button>
+      <button class="preset" data-sec="120">2:00</button>
       <button class="preset" data-sec="180">3:00</button>
-      <button class="preset" data-sec="240">4:00</button>
     </div>
     <div class="tctrl">
       <button class="t-adj" id="tMinus">−15</button>
@@ -315,10 +330,10 @@
 const CHECK_SVG = '<svg viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L19 7" stroke="#14161B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
 function ex(id,name,scheme,sets,role,load,cue,opts={}){
-  return {id,name,scheme,sets,role,load,cue,log:opts.log!==false,sub:opts.sub||null,unit:opts.unit||'lb'};
+  return {id,name,scheme,sets,role,load,cue,log:opts.log!==false,sub:opts.sub||null,unit:opts.unit||'lb',inc:opts.inc||null,bw:!!opts.bw};
 }
 
-const DAYS = {
+const DAYS_B1 = {
   A:{
     code:'A', title:'Lower Power + Push', emphasis:'Explosive lower body · horizontal push', time:'~45 min',
     warmup:[
@@ -504,6 +519,193 @@ const DAYS = {
 
 const DAY_ORDER = ['A','B','C'];
 
+/* ============================================================
+   BLOCK 2 — BUILD (hypertrophy, chest priority)
+   ~20 hard chest sets/week across Days A + C, trained at long muscle
+   lengths (deep stretch, controlled 3s lowering). Back + rear delts are
+   paired with every chest movement to keep the shoulders balanced.
+   Legs + shoulders run at productive volume on Day B.
+   role: work = priority / working move (warm) · cool = paired / support
+   ============================================================ */
+const DAYS_B2 = {
+  A:{
+    code:'A', title:'Chest + Back', emphasis:'Upper-chest priority · horizontal pull', time:'~45 min',
+    warmup:[
+      {n:'Row or bike', d:'2–3 min, easy'},
+      {n:'Band pull-aparts', d:'15 reps'},
+      {n:'Band dislocates', d:'10 slow reps'},
+      {n:'Scapular push-ups', d:'10 reps'},
+      {n:'Explosive med ball chest pass', d:'2 × 5, prime the chest'},
+      {n:'Ramp-up sets', d:'2–3 lighter sets of your first lift'}
+    ],
+    cooldown:[
+      {n:'Doorway pec stretch', d:'45s each side, at two arm heights'},
+      {n:'Lat stretch (hang or wall)', d:'40s each'},
+      {n:'Cross-body shoulder', d:'30s each'},
+      {n:'Thoracic extension over roller', d:'60s'},
+      {n:"Child's pose + side reach", d:'60s'},
+      {n:'Neck side stretch', d:'20s each'}
+    ],
+    variations:{
+      1:{ label:'V1', blocks:[
+        {kind:'strength', label:'Primary', rest:'2:00',
+          ex:ex('H_incbb','Incline Barbell Bench','4 × 6–8',4,'work','RPE 8 · 2 reps in reserve · 3s lowering','30° bench, blades pinned back and down. Lower to the upper chest, pause a beat, press up and slightly back.',{sub:'Incline DB press'}),
+          filler:{name:'Band pull-aparts',detail:'15 reps, keeps the shoulders balanced'}},
+        {kind:'superset', label:'Superset 1', rest:'90s', items:[
+          ex('H_flatdb','Flat DB Press','3 × 8–10',3,'work','RPE 8 · 2 reps in reserve · 3s lowering','Let the dumbbells sink into a deep stretch. Press up and drive them toward each other without clanking.'),
+          ex('H_csrow','Chest-Supported Row','3 × 10–12',3,'cool','RPE 8 · squeeze 1s at the top','Chest on the pad, elbows back toward the hips, no momentum.')
+        ]},
+        {kind:'superset', label:'Superset 2', rest:'60s', items:[
+          ex('H_cablefly','Cable Fly (mid height)','3 × 12–15',3,'work','RPE 9 · last set 1 rep shy of failure','Soft elbows locked in place. Open wide into the stretch, then hug a barrel and squeeze for 1s.'),
+          ex('H_pulldown','Lat Pulldown','3 × 10–12',3,'cool','RPE 8 · control the return','Chest up, pull to the collarbone, let the lats stretch fully at the top.')
+        ]},
+        {kind:'circuit', label:'Shoulder health finish', rest:'45s', rounds:2, items:[
+          ex('H_facepullA','Cable Face Pull','15',1,'cool','RPE 7 · pause + squeeze','Pull to the forehead, thumbs back, hold a beat.',{log:false}),
+          ex('H_kneeraise','Hanging Knee Raise','12',1,'cool','Controlled · no swing','Curl the pelvis up, lower slowly.',{log:false})
+        ]}
+      ]},
+      2:{ label:'V2', blocks:[
+        {kind:'strength', label:'Primary', rest:'2:00',
+          ex:ex('H_incdb','Incline DB Press','4 × 8–10',4,'work','RPE 8 · 2 reps in reserve · 3s lowering','30° bench, elbows about 45°. Deep stretch at the bottom, press up and slightly in.',{sub:'Incline machine press'}),
+          filler:{name:'Band face pulls',detail:'15 reps while you rest'}},
+        {kind:'superset', label:'Superset 1', rest:'90s', items:[
+          ex('H_dbfly','Flat DB Fly','3 × 10–12',3,'work','RPE 8 · stop before the shoulders take over','Slight elbow bend, lower wide until you feel a big chest stretch, squeeze back up.'),
+          ex('H_sacrow','Single-arm Cable Row','3 × 10–12 ea',3,'cool','RPE 8 · full stretch forward','Reach long, then drive the elbow past the ribs.')
+        ]},
+        {kind:'superset', label:'Superset 2', rest:'60s', items:[
+          ex('H_lowhighfly','Low-to-High Cable Fly','3 × 12–15',3,'work','RPE 9 · last set 1 rep shy of failure','Upper-chest focus. Scoop from the hips up to eye level, squeeze for 1s.'),
+          ex('H_ngpullup','Neutral-grip Pull-up','3 × 8–10',3,'cool','RPE 8 · add load once 10 feels easy','Full hang, lead with the chest, control down.',{bw:true, sub:'Lat pulldown'})
+        ]},
+        {kind:'circuit', label:'Shoulder health finish', rest:'45s', rounds:2, items:[
+          ex('H_revfly','Reverse Cable Fly','15',1,'cool','RPE 8 · light + strict','Arms long, sweep back, squeeze the rear delts.',{log:false}),
+          ex('H_hollow','Hollow Hold','30s',1,'cool','Hold until form slips','Low back pinned, ribs down.',{log:false})
+        ]}
+      ]}
+    }
+  },
+
+  B:{
+    code:'B', title:'Legs + Shoulders', emphasis:'Quads, glutes, hamstrings · side delts', time:'~45 min',
+    warmup:[
+      {n:'Bike', d:'3 min, build to a light sweat'},
+      {n:'Leg swings', d:'10 each, front/back + lateral'},
+      {n:"World's greatest stretch", d:'4 each side'},
+      {n:'Banded glute bridge', d:'15 reps'},
+      {n:'Bodyweight squats', d:'12, slow + controlled'},
+      {n:'Box jumps', d:'2 × 3, keep the spring'}
+    ],
+    cooldown:[
+      {n:'Hip flexor stretch', d:'40s each side'},
+      {n:'Standing quad stretch', d:'30s each'},
+      {n:'Figure-4 glute', d:'40s each'},
+      {n:'Hamstring stretch', d:'40s each'},
+      {n:'Calf stretch', d:'30s each'},
+      {n:'Sleeper / shoulder stretch', d:'30s each'}
+    ],
+    variations:{
+      1:{ label:'V1', blocks:[
+        {kind:'strength', label:'Primary', rest:'2:00',
+          ex:ex('H_backsquat','Back Squat','4 × 6–8',4,'work','RPE 8 · 2 reps in reserve · 3s lowering','Brace hard, sit down between the hips to full depth, drive the floor away.',{sub:'Goblet / safety-bar squat', inc:10}),
+          filler:{name:'90/90 hip rotations',detail:'6 each side while you rest'}},
+        {kind:'superset', label:'Superset 1', rest:'90s', items:[
+          ex('H_rdl','Romanian Deadlift','3 × 8–10',3,'work','RPE 8 · 2 reps in reserve · slow lowering','Soft knees, push the hips back until the hamstrings are fully stretched, neutral spine.',{inc:10}),
+          ex('H_seatedpress','Seated DB Shoulder Press','3 × 8–10',3,'cool','RPE 8 · 1–2 reps in reserve','Back supported, lower to ear height, press up and slightly in.')
+        ]},
+        {kind:'superset', label:'Superset 2', rest:'75s', items:[
+          ex('H_bulgarian','Bulgarian Split Squat','3 × 10 ea',3,'work','RPE 8 · last 2 reps hard but clean','Front foot flat, drop straight down, slight forward lean for more glute.'),
+          ex('H_cablelat','Cable Lateral Raise','3 × 12–15 ea',3,'cool','RPE 9 · last set 1 rep shy of failure','Cable behind the body, lead with the elbow, stop at shoulder height.')
+        ]},
+        {kind:'circuit', label:'Finisher', rest:'45s', rounds:2, items:[
+          ex('H_calfraise','Standing Calf Raise','15',1,'cool','RPE 9 · 2s pause at the bottom','Full stretch at the bottom, rise high, no bouncing.',{log:false}),
+          ex('H_legraise','Hanging Leg Raise','10',1,'cool','Slow · no swing','Curl the pelvis up, lower under control.',{log:false})
+        ]}
+      ]},
+      2:{ label:'V2', blocks:[
+        {kind:'strength', label:'Primary', rest:'2:00',
+          ex:ex('H_frontsquat','Front Squat','4 × 6–8',4,'work','RPE 8 · 2 reps in reserve · 3s lowering','Elbows high, tall chest, knees track over toes, full depth.',{sub:'Goblet squat', inc:10}),
+          filler:{name:'Deep squat hold',detail:'20s, pry the knees open'}},
+        {kind:'superset', label:'Superset 1', rest:'90s', items:[
+          ex('H_hipthrust','Hip Thrust','3 × 10–12',3,'work','RPE 8 · pause + squeeze at the top','Chin tucked, ribs down, full glute lockout each rep.',{inc:10}),
+          ex('H_arnold','Arnold Press','3 × 10–12',3,'cool','RPE 8 · smooth rotation','Start palms facing you, rotate out as you press, reverse on the way down.')
+        ]},
+        {kind:'superset', label:'Superset 2', rest:'75s', items:[
+          ex('H_walklunge','Walking DB Lunge','3 × 10 ea',3,'work','RPE 8 · controlled steps','Long stride, back knee kisses the floor, drive through the front heel.'),
+          ex('H_dblat','DB Lateral Raise','3 × 15',3,'cool','RPE 9 · last set 1 rep shy of failure','Slight forward lean, lead with the elbows, no swing.')
+        ]},
+        {kind:'circuit', label:'Finisher', rest:'45s', rounds:2, items:[
+          ex('H_facepullB','Cable Face Pull','15',1,'cool','RPE 7 · pause + squeeze','Pull to the forehead, thumbs back, hold a beat.',{log:false}),
+          ex('H_abwheel','Ab Wheel Rollout','8',1,'cool','Controlled · stop before the low back sags','Ribs down, brace, roll only as far as you can own.',{log:false})
+        ]}
+      ]}
+    }
+  },
+
+  C:{
+    code:'C', title:'Chest + Arms', emphasis:'Pressing volume · biceps + triceps', time:'~45 min',
+    warmup:[
+      {n:'Row or bike', d:'2–3 min'},
+      {n:'Arm circles', d:'10 each direction'},
+      {n:'Band pull-aparts', d:'15 reps'},
+      {n:'Slow push-ups', d:'10, 3s down'},
+      {n:'Plyo push-ups', d:'2 × 3, prime the chest'},
+      {n:'Ramp-up sets', d:'2–3 lighter sets of your first lift'}
+    ],
+    cooldown:[
+      {n:'Doorway pec stretch', d:'45s each side, at two arm heights'},
+      {n:'Overhead triceps stretch', d:'30s each'},
+      {n:'Biceps wall stretch', d:'30s each'},
+      {n:'Lat stretch', d:'40s each'},
+      {n:'Thoracic extension over roller', d:'60s'},
+      {n:'Forearm stretch', d:'30s each'}
+    ],
+    variations:{
+      1:{ label:'V1', blocks:[
+        {kind:'strength', label:'Primary', rest:'2:00',
+          ex:ex('H_bench','Bench Press','4 × 6–8',4,'work','RPE 8 · 2 reps in reserve · 3s lowering','Blades pinned, lower to mid-chest under control, drive up hard.',{sub:'DB bench press'}),
+          filler:{name:'TRX face pull',detail:'12 reps while you rest'}},
+        {kind:'superset', label:'Superset 1', rest:'90s', items:[
+          ex('H_lowinc','Low-Incline DB Press','3 × 10–12',3,'work','RPE 8 · 2 reps in reserve','15° bench. Deep stretch at the bottom, press up and together.'),
+          ex('H_chinup','Weighted Chin-up','3 × 8–10',3,'cool','RPE 8 · add load once 10 feels easy','Underhand grip, full hang, chest to the bar.',{bw:true, sub:'Lat pulldown, underhand'})
+        ]},
+        {kind:'superset', label:'Superset 2', rest:'75s', items:[
+          ex('H_dip','Chest Dip','3 × 8–12',3,'work','RPE 8 · add load once 12 feels easy','Lean forward, elbows slightly out, sink into a deep stretch, press up.',{bw:true, sub:'Deficit push-up'}),
+          ex('H_inccurl','Incline DB Curl','3 × 10–12',3,'cool','RPE 9 · last set 1 rep shy of failure','Arms hang behind you for a full biceps stretch, curl without swinging.')
+        ]},
+        {kind:'superset', label:'Arm finish', rest:'45s', items:[
+          ex('H_pushdown','Cable Triceps Pushdown','2 × 12–15',2,'cool','RPE 9 · squeeze at lockout','Elbows pinned to your sides, full lockout.'),
+          ex('H_defpush','Deficit Push-up','1 × burnout',1,'work','To technical failure · stop when form breaks','Hands on plates, sink below hand level, slow down, fast up.',{log:false})
+        ]}
+      ]},
+      2:{ label:'V2', blocks:[
+        {kind:'strength', label:'Primary', rest:'2:00',
+          ex:ex('H_pausebench','Paused Bench Press','4 × 6–8',4,'work','RPE 8 · 2 reps in reserve · 1s pause on chest','Lower under control, dead stop on the chest for 1s, then drive.',{sub:'Paused DB press'}),
+          filler:{name:'Band pull-aparts',detail:'15 reps while you rest'}},
+        {kind:'superset', label:'Superset 1', rest:'90s', items:[
+          ex('H_landmine','Landmine Press','3 × 10 ea',3,'work','RPE 8 · 2 reps in reserve','Half-kneeling, press up and across the body, squeeze the upper chest.'),
+          ex('H_chinup','Weighted Chin-up','3 × 8–10',3,'cool','RPE 8 · add load once 10 feels easy','Underhand grip, full hang, chest to the bar.',{bw:true, sub:'Lat pulldown, underhand'})
+        ]},
+        {kind:'superset', label:'Superset 2', rest:'75s', items:[
+          ex('H_crossover','High-to-Low Cable Crossover','3 × 12–15',3,'work','RPE 9 · last set 1 rep shy of failure','Lower-chest focus. Sweep down and across, hands cross slightly, squeeze 1s.'),
+          ex('H_hammer','Hammer Curl','3 × 10–12',3,'cool','RPE 9 · no swing','Neutral grip, elbows still, control the lowering.')
+        ]},
+        {kind:'superset', label:'Arm finish', rest:'45s', items:[
+          ex('H_ohext','Overhead Cable Triceps Extension','2 × 12–15',2,'cool','RPE 9 · deep stretch overhead','Face away from the cable, elbows by the ears, extend fully.'),
+          ex('H_pushdrop','Push-up Drop Set','1 × burnout',1,'work','To technical failure · no rest between stages','Feet elevated to failure, then flat, then knees.',{log:false})
+        ]}
+      ]}
+    }
+  }
+};
+
+const PROGRAMS = {
+  b1:{ id:'b1', name:'Block 1', tag:'Athletic', brand:'Athletic Performance', days:DAYS_B1,
+       legend:['Power / strength','Recovery / core','Load guidance'] },
+  b2:{ id:'b2', name:'Block 2', tag:'Build', brand:'Build · Hypertrophy', days:DAYS_B2, weeks:6,
+       legend:['Priority / working set','Paired / support','Load guidance'] }
+};
+let DAYS = DAYS_B2;
+
+
 /* ============================================================ STORAGE
    Layered so the app saves wherever it actually can:
      1. localStorage  — used when opened in a real browser (reliable, offline)
@@ -512,7 +714,7 @@ const DAY_ORDER = ['A','B','C'];
    A startup probe picks the first backend that truly works, and the UI
    shows which one is active so saving is never a silent guess.
    ============================================================ */
-const K = { sessions:'split_sessions_v2', last:'split_lastvals_v2', rotation:'split_rotation_v2', inprog:'split_inprogress_v2' };
+const K = { sessions:'split_sessions_v2', last:'split_lastvals_v2', rotation:'split_rotation_v2', inprog:'split_inprogress_v2', meta:'split_meta_v2' };
 let BACKEND='memory';
 const _mem={};
 
@@ -563,7 +765,32 @@ function syncStatusHTML(){
 }
 
 /* ============================================================ STATE ============================================================ */
-const STATE = { view:'workout', dayId:'A', varIndex:1, sessions:[], last:{}, rotation:{A:1,B:1,C:1}, log:{}, startedAt:null, progressEx:null };
+const STATE = { view:'workout', block:'b2', meta:{}, dayId:'A', varIndex:1, sessions:[], last:{}, rotation:{A:1,B:1,C:1}, log:{}, startedAt:null, progressEx:null };
+function prog(){ return PROGRAMS[STATE.block]; }
+function rotKey(d){ return STATE.block==='b1' ? d : STATE.block+':'+d; }   // b1 keeps its original keys
+function rotGet(d){ return STATE.rotation[rotKey(d)] || 1; }
+function rotSet(d,v){ STATE.rotation[rotKey(d)] = v; }
+function sessBlock(s){ return s.block || 'b1'; }                         // pre-Block-2 sessions are Block 1
+function pickNextDay(){
+  const bs=STATE.sessions.filter(s=>sessBlock(s)===STATE.block);
+  STATE.dayId = bs.length ? DAY_ORDER[(DAY_ORDER.indexOf(bs[bs.length-1].dayId)+1)%3] : 'A';
+  STATE.varIndex = rotGet(STATE.dayId);
+}
+function setBlock(b){ STATE.block = PROGRAMS[b] ? b : 'b2'; DAYS = prog().days; }
+function blockWeek(){
+  const st = STATE.meta.started && STATE.meta.started[STATE.block];
+  if(!st) return 1;
+  const d0=new Date(st); d0.setHours(0,0,0,0);
+  return Math.floor((Date.now()-d0.getTime())/(7*864e5))+1;
+}
+function weekBarHTML(){
+  if(STATE.block==='b1') return `<div class="weekbar muted"><b>Block 1 · Archived</b>Your athletic block and its history stay here. Switch to Block 2 for the current program.</div>`;
+  const w=blockWeek(), n=prog().weeks||6;
+  if(w===1) return `<div class="weekbar"><b>Week 1 · Intro week</b>Run every working set at RPE 6–7 (3–4 reps in reserve). Learn the new lifts and log honest baselines.</div>`;
+  if(w<=n)  return `<div class="weekbar"><b>Week ${w} of ${n} · Build</b>Hit the prescribed RPE. When you reach the top of the rep range, the app moves the weight up.</div>`;
+  if(w===n+1) return `<div class="weekbar cool"><b>Week ${w} · Deload</b>Do 2 sets per exercise at about 60% of your working weights. Recover, then you're ready for Block 3.</div>`;
+  return `<div class="weekbar cool"><b>Block 2 complete</b>Six weeks plus a deload are done. Keep progressing here until Block 3 is ready.</div>`;
+}
 function currentVariation(){ return DAYS[STATE.dayId].variations[STATE.varIndex]; }
 function blockItems(b){ return b.kind==='strength' ? [b.ex] : (b.items||[]); }
 
@@ -571,7 +798,36 @@ function blockItems(b){ return b.kind==='strength' ? [b.ex] : (b.items||[]); }
    Double-progression style. Big bilateral barbell lifts jump 10 lb, everything
    else 5 lb. Rep ranges (e.g. 6–8) progress off the top of the range. */
 const BIG10 = new Set(['Back Squat','Front Squat','Bench Press','Standing Overhead Press','Trap-Bar Deadlift','Romanian Deadlift','Hip Thrust']);
-function incFor(e){ return BIG10.has(e.name) ? 10 : 5; }
+function incFor(e){ return e.inc || (BIG10.has(e.name) && STATE.block==='b1' ? 10 : 5); }
+function targetLow(scheme){
+  const parts=String(scheme).split('×'); if(parts.length<2) return null;
+  const nums=(parts[1].match(/\d+/g)||[]).map(Number);
+  return nums.length ? Math.min(...nums) : null;
+}
+/* most recent logged entry of the same lift from another block */
+function priorOther(e){
+  for(let i=STATE.sessions.length-1;i>=0;i--){
+    const s=STATE.sessions[i];
+    for(const en of s.entries){
+      if(en.name===e.name && en.exId!==e.id && en.w!=='' && en.w!=null && !isNaN(parseFloat(en.w)))
+        return {w:parseFloat(en.w), r:parseInt(en.r), block:sessBlock(s)};
+    }
+  }
+  return null;
+}
+/* translate a different-rep-range result into a starting weight:
+   estimate 1RM (Epley), then pick the load for the bottom of the new range
+   with ~2 reps in reserve, rounded down to 5 lb */
+function startFromPrior(e,p){
+  const bname=PROGRAMS[p.block]?PROGRAMS[p.block].name:'last block';
+  if(e.bw) return {dir:'start', weight:p.w, why:`from ${bname} · same added load`};
+  const low=targetLow(e.scheme)||8;
+  let w;
+  if(!isNaN(p.r) && p.r>0){ const e1=p.w*(1+p.r/30); w=e1/(1+(low+2)/30); }
+  else w=p.w*0.85;
+  w=Math.max(5, Math.floor(w/5)*5);
+  return {dir:'start', weight:w, why:`from ${bname} ${p.w}×${isNaN(p.r)?'?':p.r} · adjusted for ${low}+ reps`};
+}
 function targetReps(scheme){
   const parts=String(scheme).split('×'); if(parts.length<2) return null;
   const nums=(parts[1].match(/\d+/g)||[]).map(Number);
@@ -580,7 +836,10 @@ function targetReps(scheme){
 function suggestion(e){
   if(!e.log) return null;
   const last=STATE.last[e.id];
-  if(!last || last.w==='' || last.w==null) return null;   // need a prior weight
+  if(!last || last.w==='' || last.w==null){                // no history for this exact lift
+    const p=priorOther(e);
+    return p ? startFromPrior(e,p) : null;
+  }
   const lw=parseFloat(last.w); if(isNaN(lw)) return null;
   const tr=targetReps(e.scheme), lr=parseInt(last.r);
   if(tr && !isNaN(lr) && lr>=tr){
@@ -593,7 +852,7 @@ function suggestion(e){
 
 function allLoggableExercises(){
   const out=[];
-  for(const d of DAY_ORDER) for(const vi of [1,2]) for(const b of DAYS[d].variations[vi].blocks)
+  for(const P of Object.values(PROGRAMS)) for(const d of DAY_ORDER) for(const vi of [1,2]) for(const b of P.days[d].variations[vi].blocks)
     for(const e of blockItems(b)) if(!out.find(x=>x.id===e.id)) out.push(e);
   return out;
 }
@@ -608,15 +867,12 @@ async function init(){
   STATE.sessions = await sget(K.sessions, []);
   STATE.last     = await sget(K.last, {});
   STATE.rotation = await sget(K.rotation, {A:1,B:1,C:1});
-
-  if(STATE.sessions.length){
-    const lastDay = STATE.sessions[STATE.sessions.length-1].dayId;
-    STATE.dayId = DAY_ORDER[(DAY_ORDER.indexOf(lastDay)+1)%3];
-  }
-  STATE.varIndex = STATE.rotation[STATE.dayId] || 1;
+  STATE.meta     = await sget(K.meta, {}) || {};
+  setBlock(STATE.meta.block || 'b2');
+  pickNextDay();
 
   const ip = await sget(K.inprog, null);
-  if(ip && ip.dayId===STATE.dayId && ip.varIndex===STATE.varIndex){
+  if(ip && (ip.block||'b1')===STATE.block && ip.dayId===STATE.dayId && ip.varIndex===STATE.varIndex){
     STATE.log = ip.log || {}; STATE.startedAt = ip.startedAt || Date.now();
   }
 
@@ -630,6 +886,7 @@ async function init(){
 /* ============================================================ RENDER ============================================================ */
 function render(){
   document.querySelectorAll('.tab').forEach(t=> t.setAttribute('aria-selected', t.dataset.view===STATE.view?'true':'false'));
+  const bt=document.getElementById('brandTag'); if(bt) bt.textContent=prog().brand;
   const main=document.getElementById('main'), fb=document.getElementById('finishbar'), fab=document.getElementById('timerFab');
   if(STATE.view==='workout'){
     fb.style.display=''; fab.style.display='';
@@ -643,8 +900,10 @@ function render(){
 function logFor(id){ return STATE.log[id] || (STATE.log[id]={w:'',r:'',sets:0,done:false}); }
 
 function renderWorkout(){
-  const day=DAYS[STATE.dayId], v=currentVariation();
-  let h='<div class="picker"><div class="seg">';
+  const day=DAYS[STATE.dayId], v=currentVariation(), P=prog();
+  let h='<div class="picker"><div class="blockseg">';
+  for(const b of Object.values(PROGRAMS)) h+=`<button data-block="${b.id}" aria-pressed="${b.id===STATE.block}">${b.name}<small>${b.tag}</small></button>`;
+  h+='</div><div class="seg">';
   for(const d of DAY_ORDER) h+=`<button data-day="${d}" aria-pressed="${d===STATE.dayId}"><span class="code">${d}</span><span class="lab">${DAYS[d].title}</span></button>`;
   h+='</div>';
   h+=`<div class="varrow"><span class="lbl">Variation</span><div class="varpills">
@@ -653,15 +912,16 @@ function renderWorkout(){
       </div></div></div>`;
 
   h+=`<div class="session-head">
-        <div class="bib">Day ${day.code} · Variation ${STATE.varIndex}</div>
+        <div class="bib">${P.name} · Day ${day.code} · Variation ${STATE.varIndex}</div>
         <h1>${day.title}</h1>
         <div class="meta"><span>◈ <b>${day.emphasis}</b></span></div>
         <div class="meta"><span>⏱ <b>${day.time}</b></span><span>🏋 <b>3× / week</b></span></div>
         <div class="legend">
-          <span><i class="w"></i>Power / strength</span>
-          <span><i class="c"></i>Recovery / core</span>
-          <span><i class="g"></i>Load guidance</span>
+          <span><i class="w"></i>${P.legend[0]}</span>
+          <span><i class="c"></i>${P.legend[1]}</span>
+          <span><i class="g"></i>${P.legend[2]}</span>
         </div>
+        ${weekBarHTML()}
         ${syncStatusHTML()}
       </div>`;
 
@@ -698,18 +958,19 @@ function renderExCard(e){
   if(e.log){
     const sug=suggestion(e);
     const suggHtml = sug ? `<button class="sugg ${sug.dir}" data-sugg="${e.id}" data-w="${sug.weight}" aria-label="Use suggested weight ${sug.weight} pounds">
-        <span class="sg-dir">${sug.dir==='up'?'▲ Next':'→ Hold'}</span>
+        <span class="sg-dir">${sug.dir==='up'?'▲ Next':sug.dir==='start'?'◆ Start':'→ Hold'}</span>
         <span class="sg-w">${sug.weight} ${e.unit}</span>
         <span class="sg-why">${sug.why}</span>
       </button>` : '';
     const wph = sug ? sug.weight : (last?last.w:'–');
     logHtml=`${suggHtml}<div class="log">
-      <div class="field"><label>Weight <span class="unit">${e.unit}</span></label>
+      <div class="field"><label>${e.bw?'Added weight':'Weight'} <span class="unit">${e.unit}</span></label>
         <input type="number" inputmode="decimal" data-ex="${e.id}" data-f="w" value="${lg.w}" placeholder="${wph}"></div>
       <div class="field"><label>Reps</label>
         <input type="number" inputmode="numeric" data-ex="${e.id}" data-f="r" value="${lg.r}" placeholder="${last?last.r:'–'}"></div>
     </div>`;
     if(last) logHtml+=`<div class="last">Last: <b>${last.w} ${e.unit} × ${last.r}</b></div>`;
+    else if(sug && sug.dir==='start'){ const p=priorOther(e); if(p) logHtml+=`<div class="last">${PROGRAMS[p.block]?PROGRAMS[p.block].name:'Before'}: <b>${p.w} ${e.unit} × ${isNaN(p.r)?'–':p.r}</b></div>`; }
   }
   return `<div class="card ${cls}">
     <div class="ex-top"><div class="ex-name">${e.name}</div><div class="ex-scheme">${e.scheme}</div></div>
@@ -751,7 +1012,13 @@ function renderChecklistFold(kind,title,items,mini){
 /* ============================================================ WORKOUT INTERACTIONS ============================================================ */
 function bindWorkout(){
   const main=document.getElementById('main');
-  main.querySelectorAll('[data-day]').forEach(b=>b.onclick=()=>{ flushInProgress(); STATE.dayId=b.dataset.day; STATE.varIndex=STATE.rotation[STATE.dayId]||1; STATE.log={}; STATE.startedAt=null; render(); });
+  main.querySelectorAll('[data-block]').forEach(b=>b.onclick=()=>{
+    if(b.dataset.block===STATE.block) return;
+    flushInProgress(); setBlock(b.dataset.block); pickNextDay(); STATE.log={}; STATE.startedAt=null; _lastIp=null;
+    STATE.meta.block=STATE.block; sset(K.meta, STATE.meta);
+    render(); window.scrollTo(0,0);
+  });
+  main.querySelectorAll('[data-day]').forEach(b=>b.onclick=()=>{ flushInProgress(); STATE.dayId=b.dataset.day; STATE.varIndex=rotGet(STATE.dayId); STATE.log={}; STATE.startedAt=null; render(); });
   main.querySelectorAll('[data-var]').forEach(b=>b.onclick=()=>{ flushInProgress(); STATE.varIndex=parseInt(b.dataset.var); STATE.log={}; STATE.startedAt=null; render(); });
 
   main.querySelectorAll('.dot').forEach(d=>d.onclick=()=>{
@@ -787,7 +1054,7 @@ function persistInProgress(){ clearTimeout(ipTimer); ipTimer=setTimeout(flushInP
 function flushInProgress(){
   clearTimeout(ipTimer); ipTimer=null;
   if(!STATE.startedAt) return;
-  const snap={dayId:STATE.dayId, varIndex:STATE.varIndex, log:STATE.log, startedAt:STATE.startedAt};
+  const snap={block:STATE.block, dayId:STATE.dayId, varIndex:STATE.varIndex, log:STATE.log, startedAt:STATE.startedAt};
   const payload=JSON.stringify(snap);
   if(payload===_lastIp) return;            // nothing changed since last write
   _lastIp=payload;
@@ -832,13 +1099,17 @@ async function finishSession(){
   }
   if(!entries.length){ toast('Log at least one set first'); return; }
 
-  const session={ id:Date.now(), date:new Date().toISOString(), dayId:STATE.dayId, varIndex:STATE.varIndex, dayTitle:DAYS[STATE.dayId].title, entries };
+  const session={ id:Date.now(), date:new Date().toISOString(), block:STATE.block, dayId:STATE.dayId, varIndex:STATE.varIndex, dayTitle:DAYS[STATE.dayId].title, entries };
   STATE.sessions.push(session);
-  STATE.rotation[STATE.dayId] = STATE.varIndex===1?2:1;
+  rotSet(STATE.dayId, STATE.varIndex===1?2:1);
+  STATE.meta.block=STATE.block;
+  if(!STATE.meta.started) STATE.meta.started={};
+  if(!STATE.meta.started[STATE.block]) STATE.meta.started[STATE.block]=session.date;
 
   const ok1=await sset(K.sessions, STATE.sessions);
   const ok2=await sset(K.last, STATE.last);
   await sset(K.rotation, STATE.rotation);
+  await sset(K.meta, STATE.meta);
   await sdel(K.inprog);
 
   if(!ok1||!ok2){ toast("Couldn't save here — grab a backup code from the Progress tab", true); return; }
@@ -846,7 +1117,7 @@ async function finishSession(){
   _lastIp=null;
   STATE.log={}; STATE.startedAt=null;
   STATE.dayId=DAY_ORDER[(DAY_ORDER.indexOf(STATE.dayId)+1)%3];
-  STATE.varIndex=STATE.rotation[STATE.dayId]||1;
+  STATE.varIndex=rotGet(STATE.dayId);
   toast('Session saved 💪');
   render();
 }
@@ -869,13 +1140,14 @@ function renderProgress(){
       <div class="stat s2"><div class="n">${thisWeek}</div><div class="l">This week</div></div>
       <div class="stat s3"><div class="n">${streak}</div><div class="l">Week streak</div></div>
     </div>`;
-  const logged = allLoggableExercises().filter(e=>STATE.sessions.some(s=>s.entries.some(en=>en.exId===e.id && en.w)));
+  const logged=[];   // lift names, most recently logged first
+  for(let i=STATE.sessions.length-1;i>=0;i--) for(const en of STATE.sessions[i].entries) if(en.w && !logged.includes(en.name)) logged.push(en.name);
   h+='<div class="panel"><h3>Lift progress</h3>';
   if(!logged.length){ h+='<div class="empty">No weights logged yet. Finish a session and your numbers show up here.</div>'; }
   else{
-    if(!STATE.progressEx || !logged.find(e=>e.id===STATE.progressEx)) STATE.progressEx=logged[0].id;
+    if(!STATE.progressEx || !logged.includes(STATE.progressEx)) STATE.progressEx=logged[0];
     h+='<select class="exsel" id="exsel">';
-    for(const e of logged) h+=`<option value="${e.id}" ${e.id===STATE.progressEx?'selected':''}>${e.name}</option>`;
+    for(const nm of logged) h+=`<option value="${nm}" ${nm===STATE.progressEx?'selected':''}>${nm}</option>`;
     h+='</select>';
     h+=`<div class="spark" id="sparkwrap">${sparklineFor(STATE.progressEx)}</div>`;
     h+=`<div class="hist" id="histwrap">${historyFor(STATE.progressEx)}</div>`;
@@ -888,13 +1160,13 @@ function renderProgress(){
     [...STATE.sessions].reverse().slice(0,12).forEach(s=>{
       const dt=new Date(s.date).toLocaleDateString(undefined,{month:'short',day:'numeric'});
       const exs=s.entries.filter(e=>e.w).map(e=>`${e.name} ${e.w}${e.unit||''}×${e.r}`).join(' · ') || s.entries.map(e=>e.name).slice(0,4).join(' · ');
-      h+=`<div class="sl"><div class="top"><span class="ttl">Day ${s.dayId} · ${s.dayTitle}</span><span class="dt">${dt}</span></div><div class="ex">${exs}</div></div>`;
+      h+=`<div class="sl"><div class="top"><span class="ttl">${(PROGRAMS[sessBlock(s)]||{name:''}).name} · Day ${s.dayId} · ${s.dayTitle}</span><span class="dt">${dt}</span></div><div class="ex">${exs}</div></div>`;
     });
     h+='</div>';
   }
   h+='</div>';
   h+=`<div class="panel"><h3>Backup &amp; restore</h3>
-    <p class="bk-note">Your sets, weights and history save automatically inside Claude and stay put when this app gets updated. A backup code is your safety net — keep a copy, or use it to move progress into a fresh version.</p>
+    <p class="bk-note">Your sets, weights and history save automatically on this device and stay put when this app gets updated. A backup code is your safety net — keep a copy, or use it to move progress into a fresh version.</p>
     <button class="bk-btn" id="bkExport">Create backup code</button>
     <textarea class="bk-area" id="bkArea" readonly style="display:none" aria-label="Backup code"></textarea>
     <button class="bk-btn ghost" id="bkCopy" style="display:none">Copy code</button>
@@ -905,9 +1177,9 @@ function renderProgress(){
   h+='<div style="text-align:center;margin-top:8px;"><button class="danger-link" id="resetBtn">Reset all data</button></div><div style="height:8px"></div>';
   return h;
 }
-function seriesFor(id){
+function seriesFor(name){
   const pts=[];
-  for(const s of STATE.sessions){ const en=s.entries.find(e=>e.exId===id && e.w); if(en) pts.push({date:s.date, w:parseFloat(en.w), r:en.r, unit:en.unit||'lb'}); }
+  for(const s of STATE.sessions){ const en=s.entries.find(e=>e.name===name && e.w); if(en) pts.push({date:s.date, w:parseFloat(en.w), r:en.r, unit:en.unit||'lb', block:sessBlock(s)}); }
   return pts;
 }
 function sparklineFor(id){
@@ -932,7 +1204,7 @@ function historyFor(id){
   const max=Math.max(...pts.map(p=>p.w)); let h='';
   [...pts].reverse().slice(0,10).forEach(p=>{
     const dt=new Date(p.date).toLocaleDateString(undefined,{month:'short',day:'numeric'});
-    h+=`<div class="h"><span class="d">${dt}</span><span class="v">${p.w}<small> ${p.unit} × ${p.r||'–'}</small></span>${p.w===max?'<span class="badge">PR</span>':''}</div>`;
+    h+=`<div class="h"><span class="d">${dt}</span><span class="v">${p.w}<small> ${p.unit} × ${p.r||'–'}</small></span><span class="btag">B${p.block.slice(1)}</span>${p.w===max?'<span class="badge">PR</span>':''}</div>`;
   });
   return h;
 }
@@ -942,7 +1214,7 @@ function bindProgress(){
 
   const exp=document.getElementById('bkExport');
   if(exp) exp.onclick=()=>{
-    const code=JSON.stringify({v:2, exported:new Date().toISOString(), sessions:STATE.sessions, last:STATE.last, rotation:STATE.rotation});
+    const code=JSON.stringify({v:2, exported:new Date().toISOString(), sessions:STATE.sessions, last:STATE.last, rotation:STATE.rotation, meta:STATE.meta});
     const a=document.getElementById('bkArea'); a.value=code; a.style.display='block';
     document.getElementById('bkCopy').style.display='block';
     a.focus(); a.select();
@@ -961,7 +1233,9 @@ function bindProgress(){
     if(!data || !Array.isArray(data.sessions)){ toast("That code isn't valid", true); return; }
     if(!confirm('Restore this backup? It replaces the progress currently in the app.')) return;
     STATE.sessions=data.sessions; STATE.last=data.last||{}; STATE.rotation=data.rotation||{A:1,B:1,C:1};
-    const a=await sset(K.sessions,STATE.sessions), b=await sset(K.last,STATE.last); await sset(K.rotation,STATE.rotation);
+    if(data.meta){ STATE.meta=data.meta; setBlock(STATE.meta.block||'b2'); }
+    pickNextDay(); STATE.log={}; STATE.startedAt=null;
+    const a=await sset(K.sessions,STATE.sessions), b=await sset(K.last,STATE.last); await sset(K.rotation,STATE.rotation); await sset(K.meta,STATE.meta);
     toast(a&&b ? 'Progress restored' : 'Restored here — sync will catch up', !(a&&b));
     render();
   };
@@ -969,8 +1243,8 @@ function bindProgress(){
   const rb=document.getElementById('resetBtn');
   if(rb) rb.onclick=async()=>{
     if(!confirm('Delete all logged sessions, weights, and history? This cannot be undone.')) return;
-    await sdel(K.sessions); await sdel(K.last); await sdel(K.rotation); await sdel(K.inprog);
-    STATE.sessions=[]; STATE.last={}; STATE.rotation={A:1,B:1,C:1}; STATE.log={}; STATE.startedAt=null; STATE.progressEx=null;
+    await sdel(K.sessions); await sdel(K.last); await sdel(K.rotation); await sdel(K.inprog); await sdel(K.meta);
+    STATE.sessions=[]; STATE.last={}; STATE.rotation={A:1,B:1,C:1}; STATE.meta={}; setBlock('b2'); pickNextDay(); STATE.log={}; STATE.startedAt=null; STATE.progressEx=null;
     toast('Data cleared'); render();
   };
 }
@@ -988,7 +1262,7 @@ function toast(msg, isErr){
   clearTimeout(toastTimer); toastTimer=setTimeout(()=>t.classList.remove('show'), isErr?3200:2200);
 }
 
-const TIMER={dur:120, left:120, running:false, raf:null, end:0};
+const TIMER={dur:90, left:90, running:false, raf:null, end:0};
 const RING_LEN=565.48;
 function bindTimer(){
   const fab=document.getElementById('timerFab'), sheet=document.getElementById('timerSheet'), backdrop=document.getElementById('backdrop');
@@ -1001,7 +1275,7 @@ function bindTimer(){
   document.getElementById('tMinus').onclick=()=>setDuration(Math.max(15,TIMER.dur-15));
   document.getElementById('tPlus').onclick=()=>setDuration(TIMER.dur+15);
   document.getElementById('tStart').onclick=()=>TIMER.running?stopTimer():startTimer();
-  setDuration(120);
+  setDuration(90);
   function closeSheet(){ sheet.classList.remove('show'); backdrop.classList.remove('show'); }
   window._closeTimerSheet=closeSheet;
 }
